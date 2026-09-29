@@ -35,10 +35,7 @@ jobs:
       - name: Pull latest UI image and update via Docker Compose
         run: |
           cd /home/runner/actions-runner/_work/nines-shop/nines-shop/infra
-
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
           docker compose -f docker-compose.prod.yml pull frontend
           docker compose -f docker-compose.prod.yml up -d --no-deps frontend
-
           docker image prune -f
