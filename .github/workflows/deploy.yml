@@ -43,6 +43,20 @@ jobs:
           token: ${{ secrets.INFRA_REPO_TOKEN }}
           path: infra
 
+      - name: Generate production .env file securely from GitHub Secrets
+        run: |
+            cd "$GITHUB_WORKSPACE/infra"
+            cat << 'EOF' > .env
+            DB_HOST=postgres-db
+            DB_PORT=5432
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            REDIS_HOST=redis-server
+            REDIS_PORT=6379
+            EOF
+            chmod 600 .env
+
       - name: Pull latest UI image and update via Docker Compose
         run: |
           # $GITHUB_WORKSPACE is always correct for the runner that is
