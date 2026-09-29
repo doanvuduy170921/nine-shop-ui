@@ -1,19 +1,18 @@
 # --- GIAI ĐOẠN 1: Build ứng dụng Angular ---
-FROM node:20-alpine AS builder
+# Dùng node:18-alpine thay vì node:20 để tương thích hoàn toàn với Angular 14
+FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-# Dùng npm install để cài đặt đầy đủ cả dependencies và devDependencies (chứa Angular CLI)
 RUN npm install
 
 COPY . .
-# Chạy script build chuẩn từ package.json
 RUN npm run build
 
 # --- GIAI ĐOẠN 2: Chạy trên Nginx Web Server ---
 FROM nginx:alpine
 
-# Lưu ý: Với Angular 14, output path mặc định thường là dist/nineshop-fe
+# Copy các file build tĩnh ra thư mục Nginx (với name trong package.json là nineshop-fe)
 COPY --from=builder /app/dist/nineshop-fe /usr/share/nginx/html
 
 EXPOSE 80
