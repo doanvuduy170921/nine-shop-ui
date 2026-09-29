@@ -10,9 +10,9 @@ import {API_BASE_URL} from "../../../../environment.prod";
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = '${API_BASE_URL}/auth';
+  private apiUrl = `${API_BASE_URL}/auth`;
 
-  // ✅ BehaviorSubject để theo dõi trạng thái login
+
   private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
   authStatus$ = this.authStatus.asObservable();
 
@@ -35,7 +35,6 @@ export class AuthService {
             this.tokenStorage.saveRole(res.data.role);
           }
 
-          // ✅ Cập nhật trạng thái đăng nhập
           this.authStatus.next(true);
         }
         return res;
@@ -45,10 +44,9 @@ export class AuthService {
 
   logout(): void {
     this.tokenStorage.clear();
-    this.authStatus.next(false); // ✅ cập nhật khi logout
+    this.authStatus.next(false);
   }
 
-  // ✅ Đổi tên lại cho dễ đọc
   isLoggedIn(): boolean {
     return this.isAuthenticated();
   }

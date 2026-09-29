@@ -44,8 +44,6 @@ export class RegisterUserComponent implements OnInit {
       next: (response) => {
         if (response.success) {
           this.toastService.success('Thành công', 'Vui lòng kiểm tra mã OTP trong email');
-
-          // SỬA TẠI ĐÂY: Thêm queryParams để truyền email đi
           this.router.navigate(['/validate-otp-register-user'], {
             queryParams: { email: this.signUpForm.value.email }
           });
@@ -54,7 +52,6 @@ export class RegisterUserComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        // Duy nên thêm log lỗi ở đây để dễ debug nếu backend báo lỗi
         this.errorMessage = error.error?.message || 'Đăng ký thất bại';
         console.log(error)
       }
