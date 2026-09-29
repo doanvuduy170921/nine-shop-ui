@@ -1,0 +1,135 @@
+<div class="create-user">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title">Update User</h2>
+    <a routerLink="/admin/users-list" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left me-2"></i>Back to Users
+    </a>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoadingData" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading user data...</p>
+  </div>
+
+  <!-- Form -->
+  <div *ngIf="!isLoadingData" class="row">
+    <div class="col-xl-8 col-lg-10">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">User Information</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+            <!-- Row 1: Name & Email -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Full Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  formControlName="name"
+                  [class.is-invalid]="isFieldInvalid('name')"
+                  placeholder="Enter full name">
+                <div class="invalid-feedback">
+                  {{ getFieldError('name') }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email *</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  [class.is-invalid]="isFieldInvalid('email')"
+                  placeholder="Enter email address">
+                <div class="invalid-feedback">
+                  {{ getFieldError('email') }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: Phone & Address -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="phone" class="form-label">Phone *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="phone"
+                  formControlName="phone"
+                  [class.is-invalid]="isFieldInvalid('phone')"
+                  placeholder="Enter phone number">
+                <div class="invalid-feedback">
+                  {{ getFieldError('phone') }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="address" class="form-label">Address *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  formControlName="address"
+                  [class.is-invalid]="isFieldInvalid('address')"
+                  placeholder="Enter address">
+                <div class="invalid-feedback">
+                  {{ getFieldError('address') }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 3: Role & Status -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="role" class="form-label">Role *</label>
+                <select
+                  class="form-select"
+                  id="role"
+                  formControlName="role"
+                  [class.is-invalid]="isFieldInvalid('role')">
+                  <option value="">Select role</option>
+                  <option *ngFor="let role of roles" [value]="role">
+                    {{ role | titlecase }}
+                  </option>
+                </select>
+                <div class="invalid-feedback">
+                  {{ getFieldError('role') }}
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="status" class="form-label">Status *</label>
+                <select
+                  class="form-select"
+                  id="status"
+                  formControlName="is_active">
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="d-flex gap-3 pt-3">
+              <button type="submit" class="btn btn-primary px-4" [disabled]="isLoading">
+                <i class="bi bi-check-circle me-2"></i>
+                <span *ngIf="!isLoading">Update User</span>
+                <span *ngIf="isLoading">Updating...</span>
+              </button>
+              <button type="button" class="btn btn-outline-secondary px-4" routerLink="/admin/users-list" [disabled]="isLoading">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

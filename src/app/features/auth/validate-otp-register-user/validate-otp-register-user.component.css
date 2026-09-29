@@ -1,0 +1,121 @@
+<!-- Additional CSS for OTP specific styles -->
+
+.login .otp-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), #000 20%));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: white;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+
+.login .email-display {
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.login .otp-input-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 30px 0 20px;
+}
+
+.login .otp-input {
+  width: 50px;
+  height: 56px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 12px;
+  background: var(--background-color);
+  color: var(--default-color);
+  transition: all 0.3s;
+  caret-color: var(--accent-color);
+}
+
+.login .otp-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 90%);
+  outline: none;
+  transform: scale(1.05);
+}
+
+.login .otp-input.is-invalid {
+  border-color: #dc3545;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.login .resend-section {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+}
+
+.login .resend-section span {
+  display: block;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.login .resend-btn {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.login .resend-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: color-mix(in srgb, var(--accent-color), #000 20%);
+}
+
+.login .resend-btn:disabled {
+  color: color-mix(in srgb, var(--default-color), transparent 60%);
+  cursor: not-allowed;
+}
+
+.login .switch-form .switch-btn i {
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+@media (max-width: 576px) {
+  .login .otp-input-group {
+    gap: 8px;
+  }
+
+  .login .otp-input {
+    width: 42px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .login .otp-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+  }
+}
+

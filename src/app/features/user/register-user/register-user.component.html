@@ -1,0 +1,104 @@
+<!-- Login Section -->
+<section id="login" class="login section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="auth-container">
+          <!-- Register Form -->
+          <div class="auth-form login-form active">
+            <div class="form-header">
+              <h3>Register User</h3>
+              <p>Please fill in your personal information</p>
+            </div>
+            <!-- FORM REGISTER -->
+            <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="auth-form-content">
+              <!-- Name Field -->
+              <div class="input-group mb-3">
+                <span class="input-icon"><i class="bi bi-person"></i></span>
+                <input
+                  class="form-control"
+                  formControlName="name"
+                  placeholder="User name"
+                  [class.is-invalid]="getFieldError('Name')">
+              </div>
+              <p *ngIf="getFieldError('Name')" class="text-danger small mb-2">
+                {{ getFieldError('Name') }}
+              </p>
+              <!-- Email Field -->
+              <div class="input-group mb-3">
+                <span class="input-icon"><i class="bi bi-envelope"></i></span>
+                <input
+                  type="email"
+                  class="form-control"
+                  formControlName="email"
+                  placeholder="Email"
+                  [class.is-invalid]="getFieldError('Email')">
+              </div>
+              <p *ngIf="getFieldError('Email')" class="text-danger small mb-2">
+                {{ getFieldError('Email') }}
+              </p>
+              <!-- Phone Field -->
+              <div class="input-group mb-3">
+                <span class="input-icon"><i class="bi bi-telephone"></i></span>
+                <input
+                  class="form-control"
+                  formControlName="phone"
+                  placeholder="Phone"
+                  [class.is-invalid]="getFieldError('Phone')">
+              </div>
+              <p *ngIf="getFieldError('Phone')" class="text-danger small mb-2">
+                {{ getFieldError('Phone') }}
+              </p>
+              <!-- Address Field -->
+              <div class="input-group mb-3">
+                <span class="input-icon"><i class="bi bi-house"></i></span>
+                <input
+                  class="form-control"
+                  formControlName="address"
+                  placeholder="Address"
+                  [class.is-invalid]="getFieldError('Address')">
+              </div>
+              <p *ngIf="getFieldError('Address')" class="text-danger small mb-2">
+                {{ getFieldError('Address') }}
+              </p>
+              <!-- Password Field -->
+              <div class="input-group mb-3">
+                <span class="input-icon"><i class="bi bi-lock"></i></span>
+                <input
+                  type="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Password"
+                  [class.is-invalid]="getFieldError('Password')">
+              </div>
+              <p *ngIf="getFieldError('Password')" class="text-danger small mb-2">
+                {{ getFieldError('Password') }}
+              </p>
+              <!-- Error Message -->
+              <p *ngIf="errorMessage" class="text-danger mb-3">
+                <i class="bi bi-exclamation-circle"></i> {{ errorMessage }}
+              </p>
+              <!-- Submit Button -->
+              <button type="submit" class="auth-btn primary-btn mb-3" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Sign Up <i class="bi bi-arrow-right"></i></span>
+                <span *ngIf="isLoading">
+                  <i class="bi bi-hourglass-split"></i> Đang xử lý...
+                </span>
+              </button>
+            </form>
+            <div class="divider"><span>or</span></div>
+            <button type="button" class="auth-btn social-btn">
+              <i class="bi bi-google"></i>
+              Continue with Google
+            </button>
+            <div class="switch-form">
+              <span>Already have an account?</span>
+              <button type="button" class="switch-btn" routerLink="/login">Sign in</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

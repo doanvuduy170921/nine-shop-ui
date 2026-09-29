@@ -1,0 +1,784 @@
+
+.brand-filter-bar {
+  /* ✅ Layout & Background */
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+
+  /* ✅ Spacing - UPDATED: 1.5rem top/bottom */
+  padding: 1.5rem 0;
+
+  /* ✅ Sticky positioning */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  /* ✅ Bottom margin - Creates 2rem gap with header below */
+  margin-bottom: 2rem;
+
+  /* ✅ Subtle shadow for depth */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.brand-scroll-wrapper {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc #f5f5f5;
+}
+
+.brand-scroll-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.brand-scroll-wrapper::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.brand-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 10px;
+}
+
+.brand-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
+/* ✅ Brand Button Styles - REFINED */
+.brand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  /* ✅ Spacing */
+  padding: 0.625rem 1.25rem;
+
+  /* ✅ Default state - Light gray background */
+  background: #f8f9fa;
+  color: #333333;
+  border: 1px solid #e5e5e5;
+  border-radius: 50px;
+
+  /* ✅ Typography */
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  /* ✅ Interaction */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.brand-btn:hover {
+  /* ✅ Hover state - White background with black border */
+  border-color: #000000;
+  color: #000000;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.brand-btn.active {
+  /* ✅ Active state - Black background */
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.brand-btn i {
+  font-size: 1rem;
+}
+
+/* ============================================
+   2. CATEGORY HEADER - IMPROVED TYPOGRAPHY
+   ============================================ */
+.category-header {
+  /* ✅ Remove padding-top since brand-filter-bar provides margin-bottom */
+  padding: 0 0 1.5rem 0;
+  background: transparent; /* Changed from #ffffff */
+  border-bottom: 1px solid #e5e5e5;
+
+  /* ✅ Bottom margin - Creates 1.5rem gap with products grid */
+  margin-bottom: 1.5rem;
+}
+
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.results-info {
+  flex: 1;
+}
+
+/* ✅ IMPROVED: Larger, bolder, better contrast */
+.results-count {
+  /* ✅ Typography - INCREASED SIZE */
+  font-size: 1.75rem; /* Was 1.5rem, now 1.75rem */
+  font-weight: 600;   /* Keep at 600 (semibold) */
+  color: #000000;     /* Pure black for maximum contrast */
+
+  /* ✅ Spacing */
+  margin: 0 0 0.5rem 0; /* Increased bottom margin */
+  letter-spacing: -0.02em; /* Tight letter spacing for large text */
+  line-height: 1.2;
+}
+
+/* ✅ Page info - Subtle but readable */
+.page-info {
+  font-size: 0.875rem;
+  color: #666666; /* Medium gray */
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ✅ Clear Filters Button */
+.btn-clear-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-clear-filters:hover {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+.btn-clear-filters i {
+  font-size: 1rem;
+}
+
+/* ============================================
+   3. PRODUCT LIST SECTION - OPTIMIZED SPACING
+   ============================================ */
+.category-product-list {
+  /* ✅ Removed top padding since category-header provides margin-bottom */
+  padding: 0 0 4rem 0;
+  background: transparent; /* Keep background on body instead */
+  min-height: 60vh;
+}
+
+/* ============================================
+   4. LOADING STATE
+   ============================================ */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #e5e5e5;
+  border-top-color: #000000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  margin-top: 1.5rem;
+  color: #666666;
+  font-size: 0.9375rem;
+}
+
+/* ============================================
+   5. EMPTY STATE
+   ============================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #cccccc;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000000;
+  margin: 0 0 0.75rem 0;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  color: #666666;
+  margin: 0 0 2rem 0;
+}
+
+.btn-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+  background: #333333;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   6. PRODUCTS GRID
+   ============================================ */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ============================================
+   7. PRODUCT CARD
+   ============================================ */
+.product-card {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e5e5;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  border-color: #000000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   8. PRODUCT IMAGE
+   ============================================ */
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  background: #f8f8f8;
+  overflow: hidden;
+}
+
+.image-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.4s ease;
+}
+
+/* Main image - visible by default */
+.main-image {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Hover image - hidden by default */
+.hover-image {
+  opacity: 0;
+  z-index: 2;
+  transform: scale(1.1);
+}
+
+/* On card hover */
+.product-card:hover .main-image {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.product-card:hover .hover-image {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================
+   9. BADGES
+   ============================================ */
+.badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-discount {
+  background: #000000;
+  color: #ffffff;
+}
+
+.badge-stock {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #e5e5e5;
+}
+
+/* ============================================
+   10. QUICK ACTIONS (Hover)
+   ============================================ */
+.quick-actions {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover .quick-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1.125rem;
+  color: #000000;
+}
+
+.action-btn:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+  transform: scale(1.1);
+}
+
+/* ============================================
+   11. PRODUCT INFO
+   ============================================ */
+.product-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.category-tag {
+  font-size: 0.75rem;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.product-name {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  min-height: 2.8em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-name a {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.product-name a:hover {
+  color: #666666;
+}
+
+/* ============================================
+   12. PRODUCT META (Price & Rating)
+   ============================================ */
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.price-section {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.current-price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.original-price {
+  font-size: 0.875rem;
+  color: #999999;
+  text-decoration: line-through;
+}
+
+.rating-section {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.rating-section i {
+  color: #000000;
+  font-size: 0.875rem;
+}
+
+.rating-value {
+  font-weight: 600;
+  color: #000000;
+}
+
+.rating-count {
+  color: #999999;
+}
+
+/* ============================================
+   13. SIDEBAR WIDGETS
+   ============================================ */
+.widget-item {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e5e5e5;
+}
+
+.widget-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #000000;
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Search Input Styles */
+.category-search,
+.brand-search {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.category-search input,
+.brand-search input {
+  width: 100%;
+  padding: 0.625rem 2.5rem 0.625rem 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+.category-search input:focus,
+.brand-search input:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+.category-search i,
+.brand-search i {
+  position: absolute;
+  right: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999999;
+  pointer-events: none;
+}
+
+/* List Styles */
+.category-list,
+.brand-list,
+.price-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.category-item,
+.brand-item,
+.price-item {
+  padding: 0.625rem 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.category-item:last-child,
+.brand-item:last-child,
+.price-item:last-child {
+  border-bottom: none;
+}
+
+/* Form Check Styles */
+.form-check {
+  padding-left: 1.75rem;
+  position: relative;
+}
+
+.form-check-input {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  margin-top: 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.form-check-input:checked {
+  background-color: #000000;
+  border-color: #000000;
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-check-label {
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #333333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  transition: color 0.2s ease;
+}
+
+.form-check-label:hover {
+  color: #000000;
+}
+
+/* Count/Badge Styles */
+.item-count,
+.brand-count {
+  font-size: 0.75rem;
+  color: #999999;
+  margin-left: auto;
+  padding-left: 0.5rem;
+  font-weight: 500;
+}
+
+/* Subcategory Styles */
+.subcategory-list {
+  margin-top: 0.75rem;
+  padding-left: 1.75rem;
+  border-left: 2px solid #f0f0f0;
+}
+
+.subcategory-item {
+  padding: 0.5rem 0;
+}
+
+.subcategory-item .form-check-label {
+  font-size: 0.8125rem;
+  color: #666666;
+}
+
+/* Scrollbar Styles */
+.category-list::-webkit-scrollbar,
+.brand-list::-webkit-scrollbar,
+.price-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.category-list::-webkit-scrollbar-track,
+.brand-list::-webkit-scrollbar-track,
+.price-list::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.category-list::-webkit-scrollbar-thumb,
+.brand-list::-webkit-scrollbar-thumb,
+.price-list::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 10px;
+}
+
+.category-list::-webkit-scrollbar-thumb:hover,
+.brand-list::-webkit-scrollbar-thumb:hover,
+.price-list::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
+/* ============================================
+   14. PAGINATION SECTION
+   ============================================ */
+.category-pagination {
+  padding: 2rem 0;
+}
+
+/* ============================================
+   15. RESPONSIVE DESIGN
+   ============================================ */
+
+/* Large Desktop (5 columns) */
+@media (min-width: 1400px) {
+  .products-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Desktop (4 columns) */
+@media (min-width: 992px) and (max-width: 1399px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Tablet (3 columns) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* Mobile (2 columns) */
+@media (max-width: 767px) {
+  .brand-filter-bar {
+    padding: 1rem 0;
+  }
+
+  .category-header {
+    padding: 0 0 1rem 0;
+    margin-bottom: 1.25rem;
+  }
+
+  .header-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .results-count {
+    font-size: 1.5rem; /* Slightly smaller on mobile */
+  }
+
+  .btn-clear-filters {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .product-info {
+    padding: 0.875rem;
+  }
+
+  .product-name {
+    font-size: 0.875rem;
+  }
+
+  .current-price {
+    font-size: 1rem;
+  }
+
+  .category-product-list {
+    padding: 0 0 3rem 0;
+  }
+}
+
+/* Very Small Mobile (2 columns, compact) */
+@media (max-width: 480px) {
+  .results-count {
+    font-size: 1.25rem; /* Even smaller on very small screens */
+  }
+
+  .products-grid {
+    gap: 0.75rem;
+  }
+
+  .product-info {
+    padding: 0.75rem;
+  }
+
+  .badges {
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6875rem;
+  }
+}

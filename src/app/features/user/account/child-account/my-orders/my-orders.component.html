@@ -1,0 +1,245 @@
+<div class="tab-pane fade show active" id="orders">
+  <div class="section-header">
+    <h2>My Orders</h2>
+    <div class="header-actions">
+      <!-- Search Box -->
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text"
+               placeholder="Search by Order ID..."
+               [(ngModel)]="searchQuery"
+               (keyup.enter)="onSearch()">
+      </div>
+
+      <!-- Filter Dropdown -->
+      <div ngbDropdown class="d-inline-block">
+        <button ngbDropdownToggle class="filter-btn">
+          <i class="bi bi-funnel"></i>
+          {{ selectedStatus === 'all' ? 'All Orders' : getStatusDisplay(selectedStatus) }}
+        </button>
+        <div ngbDropdownMenu>
+          <button ngbDropdownItem (click)="onStatusChange('all')">All Orders</button>
+          <button ngbDropdownItem (click)="onStatusChange('pending')">Pending</button>
+          <button ngbDropdownItem (click)="onStatusChange('processing')">Processing</button>
+          <button ngbDropdownItem (click)="onStatusChange('shipping')">Shipping</button>
+          <button ngbDropdownItem (click)="onStatusChange('delivered')">Delivered</button>
+          <!-- Thêm cancelled nếu cần -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="orders-grid">
+    <!-- Loading state -->
+    <div *ngIf="loading" class="loading-state">
+      <p>Loading your orders...</p>
+    </div>
+    <!-- Empty state -->
+    <div *ngIf="!loading && orders.length === 0" class="empty-state">
+      <p>You have no orders yet</p>
+    </div>
+    <!-- Order Card 1 -->
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-header">
+        <div class="order-id">
+          <span class="label">Order ID:</span>
+          <span class="value">{{ order.id }}</span>
+        </div>
+        <div class="order-date">{{ formatDate(order.created_at) }}</div>
+      </div>
+
+      <div class="order-content">
+        <div class="product-grid">
+          <img *ngFor="let thumbnail of order.preview_thumbnails"
+               [src]="thumbnail"
+               alt="Product preview"
+               loading="lazy">
+
+          <!-- Nếu có nhiều hơn 4 ảnh (hiếm), hiển thị +n -->
+          <span class="more-items" *ngIf="order.preview_thumbnails.length > 4">
+        +{{ order.preview_thumbnails.length - 4 }}
+      </span>
+        </div>
+
+        <div class="order-info">
+          <div class="info-row">
+            <span>Status</span>
+            <span class="status" [ngClass]="getStatusClass(order.status)">
+          {{ getStatusDisplay(order.status) }}
+        </span>
+          </div>
+          <div class="info-row">
+            <span>Items</span>
+            <span>{{ order.amount_item }} {{ order.amount_item === 1 ? 'item' : 'items' }}</span>
+          </div>
+          <div class="info-row">
+            <span>Total</span>
+            <span class="price">${{ order.total_amount | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <button type="button" class="btn-track" (click)="toggleTracking(order.id)">
+          Track Order
+        </button>
+        <button type="button" class="btn-details" (click)="toggleDetails(order.id)">
+          View Details
+        </button>
+      </div>
+      <!-- Order Tracking -->
+      <div class="tracking-info" *ngIf="trackingState[order.id]">
+        <div class="tracking-timeline">
+
+          <!-- Loading spinner -->
+          <div class="loading text-center" *ngIf="trackingLoading[order.id]">
+            <p>Loading tracking information...</p>
+          </div>
+
+          <!-- Danh sách các bước tracking -->
+          <div class="timeline-item"
+               *ngFor="let track of trackingData[order.id]; let i = index"
+               [ngClass]="getTrackStepClass(track, order.status)">
+
+            <div class="timeline-icon">
+              <i class="bi"
+                 [ngClass]="{
+             'bi-check-circle-fill': getTrackStepClass(track, order.status) === 'completed',
+             'bi-circle-fill': getTrackStepClass(track, order.status) === 'active',
+             'bi-circle': getTrackStepClass(track, order.status) === 'pending'
+           }"></i>
+            </div>
+
+            <div class="timeline-content">
+              <h5>{{ getStatusDisplay(track.status) }}</h5>
+              <p>{{ track.note }}</p>
+              <span class="timeline-date">
+          {{ formatDateTime(track.created_at) }}
+        </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Order Details -->
+      <div class="order-details" *ngIf="detailsState[order.id]">
+        <div class="details-content">
+
+          <!-- Loading -->
+          <div class="loading text-center" *ngIf="detailsLoading[order.id]">
+            <p>Loading order details...</p>
+          </div>
+
+          <!-- Nội dung chi tiết (khi có data) -->
+          <div *ngIf="orderDetailsData[order.id] as items; ">
+            <div class="detail-section">
+              <h5>Order Information</h5>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="label">Payment Method</span>
+                  <span class="value">{{ items[0].payment_method_name }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Shipping Method</span>
+                  <span class="value">{{ items[0].shipping_method_name }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h5>Items ({{ items.length }})</h5>
+              <div class="order-items">
+                <div class="item" *ngFor="let item of items">
+                  <img [src]="item.product_thumbnail"
+                       [alt]="item.product_name"
+                       loading="lazy">
+                  <div class="item-info">
+                    <h6>{{ item.product_name }}</h6>
+                    <div class="item-meta">
+                      <!-- Nếu backend có thêm SKU thì dùng, hiện tại không có nên bỏ hoặc để trống -->
+                      <!-- <span class="sku">SKU: {{ item.sku }}</span> -->
+                      <span class="qty">Qty: {{ item.quantity }}</span>
+                      <span class="price">Price: ${{ item.price | number:'1.2-2' }}</span>
+                    </div>
+                  </div>
+                  <div class="item-price">
+                    ${{ (item.price * item.quantity) | number:'1.2-2' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h5>Price Details</h5>
+              <div class="price-breakdown">
+                <div class="price-row">
+                  <span>Subtotal</span>
+                  <span>${{ items[0].subtotal | number:'1.2-2' }}</span>
+                </div>
+                <div class="price-row">
+                  <span>Shipping</span>
+                  <span>${{ items[0].shipping_price | number:'1.2-2' }}</span>
+                </div>
+                <div class="price-row">
+                  <span>Tax</span>
+                  <span>${{ items[0].tax | number:'1.2-2' }}</span>
+                </div>
+                <div class="price-row total">
+                  <span>Total</span>
+                  <span>${{ items[0].total_amount | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="detail-section">
+              <h5>Shipping Address</h5>
+              <div class="address-info">
+                <p>
+                  {{ items[0].user_name }}<br>
+                  {{ items[0].address }}<br>
+                  Phone: {{ items[0].phone }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pagination -->
+    <!-- Pagination -->
+    <div class="pagination-wrapper" *ngIf="!loading && filteredOrders.length > 0">
+      <button type="button" class="btn-prev" (click)="prevPage()" [disabled]="currentPage === 1">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+
+      <div class="page-numbers">
+        <!-- Trang đầu -->
+        <button type="button"
+                *ngIf="currentPage > 3"
+                (click)="goToPage(1)">1</button>
+
+        <span *ngIf="currentPage > 4">...</span>
+
+        <!-- Các trang gần hiện tại -->
+        <button type="button"
+                *ngFor="let page of getPagesArray()"
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+
+        <span *ngIf="currentPage < totalPages - 3">...</span>
+
+        <!-- Trang cuối -->
+        <button type="button"
+                *ngIf="currentPage < totalPages - 2"
+                (click)="goToPage(totalPages)">
+          {{ totalPages }}
+        </button>
+      </div>
+
+      <button type="button" class="btn-next" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+  </div>
+

@@ -1,0 +1,114 @@
+<div class="admin-wrapper">
+  <!-- Sidebar -->
+  <nav class="sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-header">
+      <h4 class="sidebar-title">E-Shop</h4>
+      <small class="text-light opacity-75">Admin Panel</small>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li>
+        <a routerLink="/dashboard" routerLinkActive="active">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="menu-section">
+        <span class="menu-section-title">User Management</span>
+      </li>
+      <li>
+        <a routerLink="/admin/users-list" routerLinkActive="active">
+          <i class="bi bi-people"></i>
+          <span>List Users</span>
+        </a>
+      </li>
+<!--      <li>-->
+<!--        <a routerLink="/admin/update-user" routerLinkActive="active">-->
+<!--          <i class="bi bi-person-plus"></i>-->
+<!--          <span>Update User</span>-->
+<!--        </a>-->
+<!--      </li>-->
+      <li class="menu-section">
+        <span class="menu-section-title">Category Management</span>
+      </li>
+      <li>
+        <a routerLink="/admin/category-list" routerLinkActive="active">
+          <i class="bi bi-people"></i>
+          <span>List Categories</span>
+        </a>
+      </li>
+
+
+
+      <li class="menu-section">
+        <span class="menu-section-title">Product Management</span>
+      </li>
+      <li>
+        <a routerLink="/admin/product-list" routerLinkActive="active">
+          <i class="bi bi-box-seam"></i>
+          <span>Product List</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/create-product" routerLinkActive="active">
+          <i class="bi bi-plus-circle"></i>
+          <span>Create Product</span>
+        </a>
+      </li>
+
+      <li class="menu-section">
+        <span class="menu-section-title">Sales</span>
+      </li>
+      <li>
+        <a routerLink="/admin/orders-list" routerLinkActive="active">
+          <i class="bi bi-cart-check"></i>
+          <span>Orders</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/admin/reports" routerLinkActive="active">
+          <i class="bi bi-graph-up"></i>
+          <span>Reports</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container-fluid">
+        <button class="btn btn-outline-secondary me-3" (click)="toggleSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
+
+        <a class="navbar-brand fw-bold text-primary">E-Shop Admin</a>
+
+        <div ngbDropdown class="d-inline-block">
+          <a class="nav-link d-flex align-items-center" id="dropdownBasic1" ngbDropdownToggle>
+            <img src="https://via.placeholder.com/32x32/007bff/ffffff?text=AD"
+                 class="rounded-circle me-2" alt="Admin">
+            <span>Admin</span>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu-end">
+            <button ngbDropdownItem><i class="bi bi-person me-2"></i>Profile</button>
+            <button ngbDropdownItem><i class="bi bi-gear me-2"></i>Settings</button>
+            <div class="dropdown-divider"></div>
+            <div>
+                <button ngbDropdownItem class="text-danger"  (click)="onLogout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

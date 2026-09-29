@@ -1,0 +1,169 @@
+<div class="users-list">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title">Users Management</h2>
+    <a routerLink="/users/create" class="btn btn-primary">
+      <i class="bi bi-person-plus me-2"></i>Create User
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">All Users</h5>
+
+      <div class="d-flex gap-2">
+        <!-- Search -->
+        <div class="input-group" style="width: 300px;">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by name or email..."
+            [(ngModel)]="searchText"
+            (input)="onSearchChange($any($event.target).value)">
+          <button class="btn btn-dark" type="button">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+
+        <!-- Role Filter -->
+        <select
+          class="form-select"
+          [(ngModel)]="selectedRole"
+          (change)="onRoleChange(selectedRole)"
+          style="width: 150px;">
+          <option value="">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="customer">Customer</option>
+          <option value="moderator">Moderator</option>
+        </select>
+
+        <!-- Status Filter -->
+        <select
+          class="form-select"
+          [(ngModel)]="selectedStatus"
+          (change)="onStatusChange(selectedStatus)"
+          style="width: 150px;">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+
+        <!-- Per Page -->
+        <select
+          class="form-select"
+          [(ngModel)]="perPage"
+          (change)="onPerPageChange(perPage)"
+          style="width: 150px;">
+          <option [value]="12">12 per page</option>
+          <option [value]="24">24 per page</option>
+          <option [value]="48">48 per page</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users; let i = index">
+            <td class="fw-bold">{{ i + 1 }}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="user-avatar me-3">
+                  {{ getUserInitial(user.name) }}
+                </div>
+                {{ user.name }}
+              </div>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>{{ user.address }}</td>
+            <td>
+                <span class="badge bg-{{ getRoleClass(user.role) }}">
+                  {{ user.role || 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="badge bg-{{ getStatusClass(user.is_active) }}">
+                  {{ user.is_active ? 'Active' : 'Inactive' }}
+                </span>
+            </td>
+            <td>{{ user.created_at | date:'MMM d, y' }}</td>
+            <td>{{ user.updated_at| date:'MMM d, y' }}</td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button
+                  class="btn btn-outline-primary"
+                  [routerLink]="['/admin/update-user/', user.user_uuid]"
+                  title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  title="Delete"
+                  (click)="onSoftDelete(user)"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+
+        <!-- Pagination Section -->
+        <section id="category-pagination" class="category-pagination section">
+          <div class="container">
+            <nav class="d-flex justify-content-center" aria-label="Page navigation">
+              <ul>
+                <li>
+                  <a href="#"
+                     (click)="$event.preventDefault(); previousPage()"
+                     [class.disabled]="currentPage === 1">
+                    <i class="bi bi-arrow-left"></i>
+                    <span class="d-none d-sm-inline">Previous</span>
+                  </a>
+                </li>
+
+                <!-- Dynamic Pages -->
+                <li *ngFor="let page of pages">
+                  <a href="#"
+                     (click)="$event.preventDefault(); goToPage(page)"
+                     [class.active]="page === currentPage">
+                    {{ page }}
+                  </a>
+                </li>
+
+                <li>
+                  <a href="#"
+                     (click)="$event.preventDefault(); nextPage()"
+                     [class.disabled]="currentPage === totalPages"
+                     aria-label="Next page">
+                    <span class="d-none d-sm-inline">Next</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

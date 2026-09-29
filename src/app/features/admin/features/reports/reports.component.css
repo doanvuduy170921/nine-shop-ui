@@ -1,0 +1,48 @@
+.page-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  min-height: 400px;
+}
+
+.coming-soon-icon {
+  font-size: 4rem;
+  color: #667eea;
+  opacity: 0.7;
+}
+
+.coming-soon-features {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-3px);
+}
+
+.feature-card i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.feature-card h6 {
+  margin: 0;
+  font-weight: 600;
+}

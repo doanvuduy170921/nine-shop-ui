@@ -1,0 +1,379 @@
+/* Order Tracking Page Styles */
+.order-tracking {
+  padding: 40px 0;
+  background-color: #f8f9fa;
+}
+
+/* Product Info Card */
+.tracking-product-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-image-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+  padding: 15px;
+  background: #f8f9fa;
+}
+
+
+.product-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.product-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.meta-item {
+  display: flex;
+  gap: 8px;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.meta-value {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* Tracking Message */
+.tracking-message {
+  background: #d1ecf1;
+  border-left: 4px solid #0dcaf0;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #0c5460;
+  display: flex;
+  align-items: center;
+}
+
+.tracking-message i {
+  font-size: 1.25rem;
+}
+
+/* Timeline Card */
+.tracking-timeline-card {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+/* Progress Timeline */
+.timeline-progress {
+  position: relative;
+  padding: 20px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #e9ecef;
+  border-radius: 2px;
+}
+
+.timeline-line-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0d6efd 0%, #0dcaf0 100%);
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.timeline-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.step-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  border: 4px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-step.active .step-circle {
+  background-color: #0d6efd;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+.timeline-step.completed .step-circle {
+  background-color: #198754;
+}
+
+.step-circle i {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.step-content {
+  text-align: center;
+  max-width: 150px;
+}
+
+.step-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6c757d;
+  margin-bottom: 5px;
+}
+
+.timeline-step.active .step-title,
+.timeline-step.completed .step-title {
+  color: #333;
+}
+
+.step-time {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+.timeline-step.active .step-time {
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.timeline-step.completed .step-time {
+  color: #198754;
+}
+
+/* Tracking Details Card */
+.tracking-details-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.details-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+/* Tracking Table */
+.tracking-table {
+  margin: 0;
+}
+
+.tracking-table thead {
+  background-color: #f8f9fa;
+}
+
+.tracking-table thead th {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 15px;
+  border: none;
+}
+
+.tracking-table tbody td {
+  padding: 18px 15px;
+  vertical-align: middle;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.tracking-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tracking-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.tracking-table i {
+  font-size: 1.2rem;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn i {
+  margin-right: 8px;
+}
+
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .product-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-steps {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .timeline-line {
+    width: 4px;
+    height: 100%;
+    left: 25px;
+    top: 0;
+  }
+
+  .timeline-line-fill {
+    width: 100% !important;
+
+  }
+
+  .timeline-step {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: 70px;
+  }
+
+  .step-circle {
+    position: absolute;
+    left: 0;
+    margin-bottom: 0;
+  }
+
+  .step-content {
+    text-align: left;
+    max-width: 100%;
+  }
+
+  .tracking-product-card .col-md-4 {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tracking-timeline-card,
+  .tracking-product-card,
+  .tracking-details-card {
+    padding: 20px;
+  }
+
+  .tracking-table {
+    font-size: 0.85rem;
+  }
+
+  .tracking-table thead th,
+  .tracking-table tbody td {
+    padding: 12px 8px;
+  }
+
+  .product-title {
+    font-size: 1.25rem;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+.thumbnails-horizontal {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  align-items: center !important;
+  flex-wrap: nowrap;
+}
+
+/* Override CSS gốc đang phá layout */
+.product-image-wrapper.thumbnails-horizontal img.thumb-img {
+  width: 70px !important;
+  height: 70px !important;
+  object-fit: cover !important;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.thumb-img {
+  width: 70px;           /* kích thước nhỏ theo ý bạn */
+  height: 70px;
+  object-fit: cover;     /* cắt vừa khung */
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+/* --- FIX Thumbnail Layout --- */
+.tracking-thumbnails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.tracking-thumb {
+  width: 70px !important;
+  height: 70px !important;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+/* Ẩn scrollbar xấu */
+.tracking-thumbnails::-webkit-scrollbar {
+  height: 6px;
+}
+.tracking-thumbnails::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}

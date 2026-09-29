@@ -1,0 +1,310 @@
+<app-header></app-header>
+<main class="main">
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Checkout</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li class="current">Checkout</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Checkout Section -->
+  <section id="checkout" class="checkout section">
+
+    <div class="container" >
+
+      <div class="row">
+        <div class="col-lg-7">
+          <!-- Checkout Form -->
+          <div class="checkout-container" >
+            <form class="checkout-form" (ngSubmit)="onSubmit($event)">
+              <!-- Customer Information -->
+              <div class="checkout-section" id="customer-info">
+                <div class="section-header">
+                  <div class="section-number">1</div>
+                  <h3>Customer Information</h3>
+                </div>
+                <div class="section-content">
+                  <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" class="form-control" id="name"
+                           [(ngModel)]="customerInfo.name" name="name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email"
+                           [(ngModel)]="customerInfo.email" name="email" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone"
+                           [(ngModel)]="customerInfo.phone" name="phone" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shipping Address -->
+              <div class="checkout-section" id="shipping-address">
+                <div class="section-header">
+                  <div class="section-number">2</div>
+                  <h3>Shipping Address</h3>
+                </div>
+                <div class="section-content">
+                  <div class="form-group">
+                    <label for="address">House Number</label>
+                    <input type="text" class="form-control" id="address"
+                           [(ngModel)]="shippingAddress.address" name="address" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="apartment">Street Address</label>
+                    <input type="text" class="form-control" id="apartment"
+                           [(ngModel)]="shippingAddress.apartment" name="apartment">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 form-group">
+                      <label for="city">Hamlet</label>
+                      <input type="text" class="form-control" id="city"
+                             [(ngModel)]="shippingAddress.city" name="city">
+                    </div>
+                    <div class="col-md-4 form-group">
+                      <label for="state">Ward</label>
+                      <input type="text" class="form-control" id="state"
+                             [(ngModel)]="shippingAddress.state" name="state">
+                    </div>
+                    <div class="col-md-4 form-group">
+                      <label for="zip">Province</label>
+                      <input type="text" class="form-control" id="zip"
+                             [(ngModel)]="shippingAddress.zip" name="zip">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="checkout-section" id="payment-method">
+                <div class="section-header">
+                  <div class="section-number">3</div>
+                  <h3>Payment Method</h3>
+                </div>
+                <div class="section-content">
+                  <!-- Loading State -->
+                  <div *ngIf="paymentMethods.length === 0" class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span class="ms-2">Loading payment methods...</span>
+                  </div>
+
+                  <!-- Payment Options -->
+                  <div class="payment-options" *ngIf="paymentMethods.length > 0">
+                    <div
+                      *ngFor="let method of paymentMethods; let i = index"
+                      class="payment-option"
+                      [class.active]="selectedPaymentMethodId === method.id">
+                      <input
+                        type="radio"
+                        [name]="'payment-method'"
+                        [id]="'payment-' + method.id"
+                        [checked]="selectedPaymentMethodId === method.id"
+                        (change)="onPaymentMethodChange(method.id)">
+                      <label [for]="'payment-' + method.id">
+          <span class="payment-icon">
+            <i [class]="'bi ' + getPaymentIcon(method.name)"></i>
+          </span>
+                        <span class="payment-label">{{ method.name }}</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Payment Details cho Apple Pay -->
+                  <div
+                    class="payment-details mt-3"
+                    *ngIf="selectedPaymentMethodId === 3"
+                    id="apple-details">
+                    <div class="alert alert-info">
+                      <i class="bi bi-info-circle me-2"></i>
+                      Bạn sẽ được chuyển hướng đến cổng thanh toán Apple Pay để hoàn tất giao dịch.
+                    </div>
+                  </div>
+
+
+                  <!-- Payment Details cho VNPAY -->
+                  <div
+                    class="payment-details mt-3"
+                    *ngIf="selectedPaymentMethodId === 2"
+                    id="vnpay-details">
+                    <div class="alert alert-info">
+                      <i class="bi bi-info-circle me-2"></i>
+                      Bạn sẽ được chuyển hướng đến cổng thanh toán VNPAY để hoàn tất giao dịch.
+                    </div>
+                  </div>
+
+                  <!-- Payment Details cho COD -->
+                  <div
+                    class="payment-details mt-3"
+                    *ngIf="selectedPaymentMethodId === 1"
+                    id="cod-details">
+                    <div class="alert alert-success">
+                      <i class="bi bi-cash-coin me-2"></i>
+                      Bạn sẽ thanh toán bằng tiền mặt khi nhận hàng.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Order Review -->
+              <!-- Order Review -->
+              <div class="checkout-section" id="order-review">
+                <div class="section-header">
+                  <div class="section-number">4</div>
+                  <h3>Review &amp; Place Order</h3>
+                </div>
+                <div class="section-content">
+                  <div class="form-check terms-check">
+                    <input class="form-check-input" type="checkbox" id="terms" name="terms" required="">
+                    <label class="form-check-label" for="terms">
+                      I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a> and <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                    </label>
+                  </div>
+                  <div class="success-message d-none">Your order has been placed successfully! Thank you for your purchase.</div>
+
+                  <!-- Place Order Button -->
+                  <div class="place-order-container mt-3">
+                    <button type="submit" class="btn btn-primary w-100" [disabled]="isLoading">
+                      <span *ngIf="!isLoading">Place Order - {{ getTotal().toFixed(2) | number:'1.0-0' }} đ</span>
+                      <span *ngIf="isLoading">Processing...</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+              </div>
+          </div>
+
+        <div class="col-lg-5">
+          <!-- Order Summary -->
+          <div class="order-summary" data-aos="fade-left" data-aos-delay="200">
+            <div class="order-summary-header">
+              <h3>Order Summary</h3>
+              <span class="item-count">{{ getTotalItems() }} Items</span>
+            </div>
+
+            <div class="order-summary-content">
+              <!-- Loading State -->
+              <div *ngIf="isLoading" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+
+              <!-- Error State -->
+              <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+
+              <!-- Order Items -->
+              <div class="order-items" *ngIf="!isLoading && !errorMessage">
+                <div class="order-item" *ngFor="let item of cartItems">
+                  <div class="order-item-image">
+                    <img [src]="item.thumbnail" [alt]="item.name" class="img-fluid">
+                  </div>
+                  <div class="order-item-details">
+                    <h4>{{ item.name }}</h4>
+                    <div class="order-item-price">
+                      <span class="quantity">{{ item.quantity }} ×</span>
+                      <span class="price">{{ item.price.toFixed(2) | number:'1.0-0' }} đ</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="promo-code">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Promo Code" aria-label="Promo Code">
+                  <button class="btn btn-outline-primary" type="button">Apply</button>
+                </div>
+              </div>
+
+              <div class="order-totals">
+                <div class="order-subtotal d-flex justify-content-between">
+                  <span>Subtotal</span>
+                  <span>{{ getSubtotal().toFixed(2) | number:'1.0-0' }} đ</span>
+                </div>
+                <div class="order-shipping d-flex justify-content-between">
+                  <span>Shipping ({{ getShippingMethod() }})</span>
+                  <span>{{ getShippingFee().toFixed(2)| number:'1.0-0' }} đ</span>
+                </div>
+                <div class="order-tax d-flex justify-content-between">
+                  <span>Tax</span>
+                  <span>{{ getTax().toFixed(2) | number:'1.0-0' }} đ</span>
+                </div>
+                <div class="order-total d-flex justify-content-between">
+                  <span>Total</span>
+                  <span>{{ getTotal().toFixed(2) | number:'1.0-0' }} đ</span>
+                </div>
+              </div>
+
+              <div class="secure-checkout">
+                <div class="secure-checkout-header">
+                  <i class="bi bi-shield-lock"></i>
+                  <span>Secure Checkout</span>
+                </div>
+                <div class="payment-icons">
+                  <i class="bi bi-credit-card-2-front"></i>
+                  <i class="bi bi-credit-card"></i>
+                  <i class="bi bi-paypal"></i>
+                  <i class="bi bi-apple"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms and Privacy Modals -->
+      <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor.</p>
+              <p>Suspendisse in orci enim. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor.</p>
+              <p>Suspendisse in orci enim. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.</p>
+              <p>Suspendisse in orci enim. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor.</p>
+              <p>Suspendisse in orci enim. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim. Phasellus molestie magna non est bibendum non venenatis nisl tempor.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- /Checkout Section -->
+</main>
+<app-footer></app-footer>

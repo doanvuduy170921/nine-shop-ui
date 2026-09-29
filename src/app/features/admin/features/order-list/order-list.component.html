@@ -1,0 +1,165 @@
+<div class="orders-list">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title">Orders Management</h2>
+    <div class="d-flex gap-2">
+      <select class="form-select form-select-sm" style="width: auto;">
+        <option>All Status</option>
+        <option>Pending</option>
+        <option>Processing</option>
+        <option>Shipped</option>
+        <option>Completed</option>
+        <option>Cancelled</option>
+      </select>
+      <button class="btn btn-outline-primary btn-sm">
+        <i class="bi bi-funnel me-2"></i>Filter
+      </button>
+    </div>
+  </div>
+
+  <!-- Orders Stats -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3 col-6">
+      <div class="stats-mini-card bg-primary">
+        <div class="stats-mini-icon">
+          <i class="bi bi-cart-check"></i>
+        </div>
+        <div class="stats-mini-info">
+          <h4>{{ totalOrders }}</h4>
+          <span>Total Orders</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="stats-mini-card bg-success">
+        <div class="stats-mini-icon">
+          <i class="bi bi-check-circle"></i>
+        </div>
+        <div class="stats-mini-info">
+          <h4>{{ completedOrders }}</h4>
+          <span>Completed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="stats-mini-card bg-warning">
+        <div class="stats-mini-icon">
+          <i class="bi bi-clock"></i>
+        </div>
+        <div class="stats-mini-info">
+          <h4>{{ pendingOrders }}</h4>
+          <span>Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="stats-mini-card bg-info">
+        <div class="stats-mini-icon">
+          <i class="bi bi-truck"></i>
+        </div>
+        <div class="stats-mini-info">
+          <h4>{{ shippedOrders }}</h4>
+          <span>Shipped</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3">Loading orders...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Orders Table -->
+  <div class="card" *ngIf="!isLoading">
+    <div class="card-header">
+      <h5 class="mb-0">All Orders</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr *ngFor="let order of orders">
+
+            <!-- Order ID -->
+            <td class="fw-bold">#{{ order.id }}</td>
+
+            <!-- Customer Name -->
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="customer-avatar me-2">
+                  {{ order.name.charAt(0).toUpperCase() }}
+                </div>
+                {{ order.name }}
+              </div>
+            </td>
+
+            <!-- Created Date -->
+            <td>{{ order.created_at | date:'MMM d, y' }}</td>
+
+            <!-- Items count -->
+            <td>
+              <span class="text-muted">{{ order.amount_item }} item(s)</span>
+            </td>
+
+            <!-- Status -->
+            <td>
+              <span class="badge bg-{{ getStatusBadgeClass(order.status) }} d-flex align-items-center"
+                    style="width: fit-content;">
+                <i class="{{ getStatusIcon(order.status) }} me-1"></i>
+                {{ order.status | titlecase }}
+              </span>
+            </td>
+
+            <!-- Total Amount -->
+            <td class="fw-bold text-success">${{ order.total_amount.toFixed(2) }}</td>
+
+            <!-- Action -->
+            <td>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                (click)="viewOrderDetail(order.id)">
+                <i class="bi bi-eye"></i> View
+              </button>
+            </td>
+
+          </tr>
+
+          <!-- Empty State -->
+          <tr *ngIf="orders.length === 0">
+            <td colspan="7" class="text-center py-4">
+              <i class="bi bi-inbox display-4 text-muted"></i>
+              <p class="mt-3 text-muted">No orders found</p>
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,276 @@
+<app-header></app-header>
+<main class="main">
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Category</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li class="current">Category</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- ========================================== -->
+  <!-- ✅ BRAND FILTER BAR - FULL WIDTH (MOVED OUTSIDE COL-LG-8) -->
+  <!-- ========================================== -->
+  <section class="brand-filter-bar">
+    <div class="container">
+      <div class="brand-scroll-wrapper">
+        <button
+          *ngFor="let brand of listBrand"
+          class="brand-btn"
+          [class.active]="selectedBrand === brand.id"
+          (click)="onBrandDemoSelect(brand.id)">
+          <span>{{ brand.name }}</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 sidebar">
+        <div class="widgets-container">
+
+          <!-- Product Categories Widget -->
+          <div class="product-categories-widget widget-item">
+            <h3 class="widget-title">Categories</h3>
+
+            <div class="category-filter-content">
+              <!-- Loading spinner -->
+              <div *ngIf="isLoadingCategories" class="text-center py-3">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 mb-0 text-muted small">Loading categories...</p>
+              </div>
+
+              <!-- Categories list -->
+              <div  class="category-list">
+
+
+                <!-- Category items -->
+                <div class="category-item" *ngFor="let category of categories">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="'category-' + category.id"
+                      [checked]="selectedCategory === category.id"
+                      (change)="onCategorySelect(category.id)">
+                    <label class="form-check-label" [for]="'category-' + category.id">
+                      {{ category.name }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!--/Product Categories Widget -->
+
+          <!-- Pricing Range Widget -->
+          <div class="pricing-range-widget widget-item">
+            <h3 class="widget-title">Price Range</h3>
+
+            <div class="price-filter-content">
+              <div class="price-list">
+                <div class="price-item" *ngFor="let range of priceRanges">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="'price-' + range.id"
+                      [checked]="selectedPriceRange === range.id"
+                      (change)="onPriceRangeSelect(range.id)">
+                    <label class="form-check-label" [for]="'price-' + range.id">
+                      {{ range.label }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!--/Pricing Range Widget -->
+
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- MAIN CONTENT (RIGHT) - col-lg-8 -->
+      <!-- ========================================== -->
+      <div class="col-lg-8">
+
+        <!-- ========================================== -->
+        <!-- ✅ PRODUCTS HEADER - IMPROVED SPACING & TYPOGRAPHY -->
+        <!-- ========================================== -->
+        <section class="category-header">
+          <div class="container">
+            <div class="header-info">
+              <div class="results-info">
+                <!-- ✅ Larger font, better contrast -->
+                <h2 class="results-count">{{ totalProducts }} Products</h2>
+                <p class="page-info" *ngIf="totalPages > 0">
+                  Page {{ currentPage }} of {{ totalPages }}
+                </p>
+              </div>
+
+              <!-- Clear Filters Button -->
+              <button
+                *ngIf="selectedCategory || selectedBrand || selectedPriceRange || searchText "
+                class="btn-clear-filters"
+                (click)="resetFilters()">
+                <i class="bi bi-x-circle"></i>
+                <span>Clear All Filters</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- PRODUCTS LIST SECTION -->
+
+        <section class="category-product-list">
+          <div class="container">
+
+            <!-- Loading State -->
+            <div *ngIf="isLoadingProducts" class="loading-state">
+              <div class="spinner"></div>
+              <p>Loading products...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="!isLoadingProducts && products.length === 0" class="empty-state">
+              <div class="empty-icon">
+                <i class="bi bi-inbox"></i>
+              </div>
+              <h3>No Products Found</h3>
+              <p>Try adjusting your filters or search terms</p>
+              <button class="btn-reset" (click)="resetFilters()">
+                <i class="bi bi-arrow-clockwise"></i>
+                Reset Filters
+              </button>
+            </div>
+
+            <!-- Products Grid -->
+            <div *ngIf="!isLoadingProducts && products.length > 0" class="products-grid">
+
+              <!-- Single Product Card -->
+              <div class="product-card" *ngFor="let product of products">
+
+                <!-- Product Image Container -->
+                <div class="product-image-wrapper">
+                  <a [routerLink]="['/product-detail', product.slug]" class="image-link">
+                    <img [src]="product.thumbnail" class="img-fluid" [alt]="product.name">
+                  </a>
+
+                  <!-- Badges -->
+                  <div class="badges">
+                    <!-- Discount Badge -->
+                    <span class="badge badge-discount" *ngIf="product.discount_price && product.discount_price > 0">
+                      -{{ ((product.discount_price / product.price) * 100) | number:'1.0-0' }}%
+                    </span>
+
+                    <!-- Out of Stock Badge -->
+                    <span class="badge badge-stock" *ngIf="product.stock_quantity === 0">
+                      Out of Stock
+                    </span>
+                  </div>
+                  <!-- Quick Actions (hover) -->
+                  <div class="quick-actions">
+                    <button type="button" class="action-btn" title="Quick View">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button type="button" class="action-btn" title="Add to Cart">
+                      <i class="bi bi-cart-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- Product Info -->
+                <div class="product-info">
+                  <!-- Category Tag -->
+                  <span class="category-tag">{{ product.category_name }}</span>
+                  <!-- Product Name -->
+                  <h3 class="product-name">
+                    <a [routerLink]="['/product-detail', product.slug]">
+                      {{ product.name }}
+                    </a>
+                  </h3>
+                  <!-- Price & Rating Row -->
+                  <div class="product-meta">
+                    <div class="price-section">
+                      <span class="current-price">${{ product.price }}</span>
+                      <span class="original-price" *ngIf="product.discount_price > 0">
+                        ${{ product.price + product.discount_price }}
+                      </span>
+                    </div>
+                    <div class="rating-section">
+                      <i class="bi bi-star-fill"></i>
+                      <span class="rating-value">4.8</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Single Product Card -->
+            </div>
+          </div>
+        </section>
+        <!-- PAGINATION SECTION -->
+        <section class="category-pagination">
+          <div class="container">
+            <!-- Pagination -->
+            <nav
+              *ngIf="!isLoadingProducts && totalPages > 1"
+              class="d-flex justify-content-center"
+              aria-label="Page navigation">
+              <ul>
+                <!-- Previous Button -->
+                <li [class.disabled]="currentPage === 1">
+                  <a
+                    (click)="goToPreviousPage()"
+                    [class.disabled]="currentPage === 1"
+                    aria-label="Previous page">
+                    <i class="bi bi-arrow-left"></i>
+                    <span class="d-none d-sm-inline">Previous</span>
+                  </a>
+                </li>
+
+                <!-- First Page -->
+                <li *ngIf="currentPage > 3">
+                  <a  (click)="onPageChange(1)">1</a>
+                </li>
+                <li *ngIf="currentPage > 3" class="ellipsis">...</li>
+
+                <!-- Page Numbers -->
+                <li *ngFor="let page of getPageNumbers()">
+                  <a
+
+                    (click)="onPageChange(page)"
+                    [class.active]="currentPage === page">
+                    {{ page }}
+                  </a>
+                </li>
+                <!-- Last Page -->
+                <li *ngIf="currentPage < totalPages - 2" class="ellipsis">...</li>
+                <li *ngIf="currentPage < totalPages - 2">
+                  <a  (click)="onPageChange(totalPages)">{{ totalPages }}</a>
+                </li>
+                <!-- Next Button -->
+                <li [class.disabled]="currentPage === totalPages">
+                  <a
+                    (click)="goToNextPage()"
+                    [class.disabled]="currentPage === totalPages"
+                    aria-label="Next page">
+                    <span class="d-none d-sm-inline">Next</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </section><!-- /Category Pagination Section -->
+      </div>
+    </div>
+  </div>
+</main>
+<app-footer></app-footer>

@@ -1,0 +1,169 @@
+<div class="card-body">
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p>Loading products...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="table-responsive">
+    <table class="table products-table">
+      <thead>
+      <tr>
+        <th style="width: 60px;">ID</th>
+        <th style="width: 300px;">Product</th>
+        <th>Category</th>
+        <th>Brand</th>
+        <th class="text-center">Variants</th> <th class="text-center">Stock</th>
+        <th class="text-end">Price Range</th>
+        <th class="text-center">Status</th>
+        <th class="text-center" style="width: 120px;">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let product of products">
+        <tr class="product-row" [class.expanded]="product.expanded">
+          <td class="fw-bold text-muted">#{{ product.id }}</td>
+
+          <td>
+            <div class="product-info">
+              <div class="product-thumbnail-wrapper">
+                <img [src]="product.thumbnail" [alt]="product.name" class="product-thumbnail"
+                     onerror="this.src='assets/images/placeholder.jpg'" />
+              </div>
+              <div class="product-details">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="product-meta">
+                    <span class="badge bg-light text-dark">
+                      <i class="bi bi-box"></i> {{ product.variant_count }} variant{{ product.variant_count > 1 ? 's' : '' }}
+                    </span>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <td><span class="badge bg-info-subtle text-info">{{ product.category_name }}</span></td>
+          <td><span class="badge bg-secondary-subtle text-secondary">{{ product.brand_name }}</span></td>
+
+          <td class="text-center">
+            <button class="btn btn-sm"
+                    [ngClass]="product.expanded ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="toggleVariants(product)"
+                    [disabled]="product.variant_count === 0">
+              <i class="bi" [ngClass]="product.expanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+              <span class="ms-1">{{ product.variant_count }}</span>
+            </button>
+          </td>
+
+          <td class="text-center">
+              <span class="stock-badge" [class.low-stock]="product.total_stock < 50">
+                <i class="bi bi-box-seam"></i> {{ product.total_stock }}
+              </span>
+          </td>
+
+          <td class="text-end">
+            <div class="price-range">
+              <span class="price-min">{{ product.min_price | number:'1.0-0' }}đ</span>
+              <span class="price-separator" *ngIf="product.min_price !== product.max_price"> - </span>
+              <span class="price-max" *ngIf="product.min_price !== product.max_price">
+                  {{ product.max_price | number:'1.0-0' }}đ
+                </span>
+            </div>
+          </td>
+
+          <td class="text-center">
+              <span class="status-badge" [ngClass]="{'status-active': product.status === 'active', 'status-inactive': product.status === 'inactive'}">
+                {{ product.status | titlecase }}
+              </span>
+          </td>
+
+          <td class="text-center">
+            <div class="action-buttons">
+              <button class="btn btn-sm btn-outline-success"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+
+        <tr *ngIf="product.expanded" class="variants-row">
+          <td colspan="9" class="p-0 border-0">
+            <div class="variants-wrapper">
+              <div class="variant-arrow-indicator"></div>
+
+              <div class="variants-card shadow-sm">
+                <div class="variants-header">
+                  <h6><i class="bi bi-layers-half me-2"></i>Product Variants Detail</h6>
+                  <span class="badge bg-primary">{{ product.variant_count }} Versions</span>
+                </div>
+
+                <div *ngIf="loadingVariants[product.id]" class="variants-loading">
+                  <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+                  <span class="ms-2">Fetching data...</span>
+                </div>
+
+                <div *ngIf="!loadingVariants[product.id] && productVariants[product.id]" class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                      <th class="ps-4">Specifications</th>
+                      <th class="text-center">Preview</th>
+                      <th class="text-end">Unit Price</th>
+                      <th class="text-center">Inventory</th>
+                      <th class="text-center">Sales Status</th>
+                      <th class="text-center pe-4">Manage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let variant of productVariants[product.id]">
+                      <td class="ps-4">
+                        <div class="variant-specs-grid">
+                          <div *ngFor="let attr of getAttributesArray(variant.attributes)"
+                               class="spec-tag me-2 mb-1"
+                               [ngClass]="attr.colorClass">
+                            <span class="spec-key text-muted">{{ attr.key }}:</span>
+                            <span class="spec-value ms-1 fw-bold">{{ attr.value }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="text-center">
+                        <div class="variant-img-box">
+                          <img *ngIf="variant.image && variant.image.length > 0"
+                               [src]="variant.image"
+                               onerror="this.src='assets/images/placeholder.jpg'" />
+                          <i *ngIf="!variant.image || variant.image.length === 0" class="bi bi-image text-muted"></i>
+                        </div>
+                      </td>
+                      <td class="text-end fw-bold text-dark">
+                        {{ variant.price | number:'1.0-0' }}<span class="currency">đ</span>
+                      </td>
+                      <td class="text-center">
+                        <div class="stock-indicator">
+                          <div class="progress" style="height: 6px; width: 60px; margin: 0 auto 4px;">
+                            <div class="progress-bar" [ngClass]="variant.stock_quantity > 50 ? 'bg-success' : (variant.stock_quantity > 10 ? 'bg-warning' : 'bg-danger')"
+                                 [style.width.%]="variant.stock_quantity > 100 ? 100 : variant.stock_quantity"></div>
+                          </div>
+                          <span class="stock-text">{{ variant.stock_quantity }}</span>
+                        </div>
+                      </td>
+                      <td class="text-center">
+                        <div class="form-check form-switch d-inline-block">
+                          <input class="form-check-input custom-switch" type="checkbox"
+                                 [checked]="variant.is_active"
+                                 (change)="toggleVariantStatus(product.id, variant.id, $event)">
+                        </div>
+                      </td>
+                      <td class="text-center pe-4">
+                        <button class="btn btn-icon-only text-primary"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn btn-icon-only text-danger"><i class="bi bi-trash"></i></button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<app-header></app-header>
+
+<section id="otp-verify" class="login section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="auth-container">
+
+          <div class="auth-form otp-form active">
+            <div class="form-header">
+              <div class="otp-icon" [class.verified]="isVerified">
+                <i class="bi" [class.bi-envelope-check]="!isVerified" [class.bi-check-circle-fill]="isVerified"></i>
+              </div>
+              <h3>{{ isVerified ? 'Đã kích hoạt!' : 'Xác thực đăng ký' }}</h3>
+              <p *ngIf="!isVerified">Chúng tôi đã gửi mã xác thực đến email:</p>
+              <p class="email-display"><strong>{{ userEmail }}</strong></p>
+            </div>
+            <form class="auth-form-content" [formGroup]="otpForm" (ngSubmit)="onVerifyOtp($event)">
+              <div class="otp-input-group">
+                <input #otp1 type="text" maxlength="1" class="otp-input" formControlName="digit1" (input)="onInput($event, 1)" (keydown)="onKeyDown($event, 1)" (paste)="onPaste($event)" [disabled]="isLoading || isVerified">
+                <input #otp2 type="text" maxlength="1" class="otp-input" formControlName="digit2" (input)="onInput($event, 2)" (keydown)="onKeyDown($event, 2)" [disabled]="isLoading || isVerified">
+                <input #otp3 type="text" maxlength="1" class="otp-input" formControlName="digit3" (input)="onInput($event, 3)" (keydown)="onKeyDown($event, 3)" [disabled]="isLoading || isVerified">
+                <input #otp4 type="text" maxlength="1" class="otp-input" formControlName="digit4" (input)="onInput($event, 4)" (keydown)="onKeyDown($event, 4)" [disabled]="isLoading || isVerified">
+                <input #otp5 type="text" maxlength="1" class="otp-input" formControlName="digit5" (input)="onInput($event, 5)" (keydown)="onKeyDown($event, 5)" [disabled]="isLoading || isVerified">
+                <input #otp6 type="text" maxlength="1" class="otp-input" formControlName="digit6" (input)="onInput($event, 6)" (keydown)="onKeyDown($event, 6)" [disabled]="isLoading || isVerified">
+              </div>
+              <p *ngIf="errorMessage" class="text-danger text-center mt-3">
+                <i class="bi bi-exclamation-circle"></i> {{ errorMessage }}
+              </p>
+              <button type="submit" class="auth-btn primary-btn mt-4" [disabled]="isLoading || isVerified || otpForm.invalid">
+                <span *ngIf="!isLoading && !isVerified">Xác thực tài khoản</span>
+                <span *ngIf="isLoading">Đang kiểm tra...</span>
+                <span *ngIf="isVerified"><i class="bi bi-check-circle"></i> Thành công</span>
+              </button>
+              <div class="switch-form">
+                <span>Bạn muốn quay lại?</span>
+                <button type="button" class="switch-btn" routerLink="/register-user">Trang đăng ký</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

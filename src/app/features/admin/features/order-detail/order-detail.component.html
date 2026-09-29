@@ -1,0 +1,161 @@
+<main class="main">
+  <!-- Page Title & Breadcrumb -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Order Detail</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a [routerLink]="['/']">Dashboard</a></li>
+          <li><a [routerLink]="['/account/orders']">Order</a></li>
+          <li class="current">Order detail</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Order Detail Section -->
+  <section class="order-detail section">
+    <div class="container">
+      <div class="row">
+        <!-- Left Column: Order Items -->
+        <div class="col-lg-8">
+          <!-- Order Items Card -->
+          <div class="order-items-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h3>All Items</h3>
+            </div>
+
+            <div class="card-body">
+              <!-- Loading State -->
+              <div *ngIf="isLoading" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+
+              <!-- Error State -->
+              <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+
+              <!-- Order Items List -->
+              <div class="order-item" *ngFor="let item of orderItems">
+                <div class="item-image">
+                  <img [src]="item.product_thumbnail" [alt]="item.product_name" class="img-fluid">
+                </div>
+
+                <div class="item-details">
+                  <p class="item-label">Product name</p>
+                  <h4 class="item-name">{{ item.product_name }}</h4>
+                </div>
+
+                <div class="item-quantity">
+                  <p class="item-label">Quantity</p>
+                  <p class="item-value">{{ item.quantity }}</p>
+                </div>
+
+                <div class="item-price">
+                  <p class="item-label">Price</p>
+                  <p class="item-value">${{ item.item_price }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart Totals -->
+            <div class="cart-totals">
+              <div class="totals-list">
+                <div class="totals-item">
+                  <span class="totals-label">Subtotal:</span>
+                  <span class="totals-value">${{ order?.subtotal?.toFixed(2) }}</span>
+                </div>
+                <div class="totals-item">
+                  <span class="totals-label">Shipping:</span>
+                  <span class="totals-value">${{ order?.shipping_price?.toFixed(2) }}</span>
+                </div>
+                <div class="totals-item">
+                  <span class="totals-label">Tax (GST):</span>
+                  <span class="totals-value">${{ order?.tax?.toFixed(2) }}</span>
+                </div>
+                <div class="totals-item totals-total">
+                  <span class="totals-label">Total price:</span>
+                  <span class="totals-value">${{ order?.total_amount?.toFixed(2) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="col-lg-4">
+          <!-- Summary Card -->
+          <div class="summary-card">
+            <h3 class="summary-title">Summary</h3>
+            <div class="summary-content">
+              <div class="summary-item">
+                <span class="summary-label">Order ID</span>
+                <span class="summary-value">{{ order?.id }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Date</span>
+                <span class="summary-value">{{ order?.order_created_at | date:'MMM d, y h:mm a' }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Status</span>
+                <span class="status-badge" [ngClass]="getStatusClass(order?.status || '')">
+                  {{ getStatusLabel(order?.status || '') }}
+                </span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Total</span>
+                <span class="summary-value summary-total">${{ order?.total_amount?.toFixed(2) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combined Info Card -->
+          <div class="combined-info-card">
+            <!-- Customer Info Section -->
+            <div class="info-section">
+              <h4 class="info-section-title">Customer</h4>
+              <div class="info-item">
+                <i class="bi bi-person-fill"></i>
+                <span>{{ order?.customer_name }}</span>
+              </div>
+              <div class="info-item">
+                <i class="bi bi-envelope-fill"></i>
+                <span>{{ order?.email }}</span>
+              </div>
+              <div class="info-item" *ngIf="order?.phone">
+                <i class="bi bi-telephone-fill"></i>
+                <span>{{ order?.phone }}</span>
+              </div>
+            </div>
+
+            <!-- Shipping Section -->
+            <div class="info-section">
+              <h4 class="info-section-title">Shipping Address</h4>
+              <p class="address-text">{{ order?.address }}</p>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="info-section">
+              <h4 class="info-section-title">Payment Method</h4>
+              <p class="payment-text">{{ order?.payment_method_name }}</p>
+            </div>
+          </div>
+
+          <!-- Delivery Card -->
+          <div class="summary-card">
+            <h3 class="summary-title">Expected Delivery</h3>
+            <div class="summary-content">
+              <p class="delivery-date">{{ calculateExpectedDelivery() }}</p>
+              <button (click)=goToTracking() class="btn btn-outline-primary w-100 track-btn">
+                <i class="bi bi-truck"></i> Track order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

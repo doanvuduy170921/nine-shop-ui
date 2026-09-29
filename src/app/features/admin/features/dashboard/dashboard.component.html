@@ -1,0 +1,118 @@
+<div class="dashboard">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title">Dashboard</h2>
+    <div class="text-muted">
+      <i class="bi bi-calendar3"></i>
+
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-xl-3 col-md-6">
+      <div class="stats-card bg-gradient-primary">
+        <div class="stats-card-body">
+          <div class="stats-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stats-info">
+            <h3>{{ stats.totalUsers | number }}</h3>
+            <p>Total Users</p>
+            <small class="stats-change text-success">
+              <i class="bi bi-arrow-up"></i> +12% from last month
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stats-card bg-gradient-success">
+        <div class="stats-card-body">
+          <div class="stats-icon">
+            <i class="bi bi-box-seam"></i>
+          </div>
+          <div class="stats-info">
+            <h3>{{ stats.totalProducts | number }}</h3>
+            <p>Total Products</p>
+            <small class="stats-change text-success">
+              <i class="bi bi-arrow-up"></i> +5% from last month
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stats-card bg-gradient-warning">
+        <div class="stats-card-body">
+          <div class="stats-icon">
+            <i class="bi bi-cart-check"></i>
+          </div>
+          <div class="stats-info">
+            <h3>{{ stats.totalOrders | number }}</h3>
+            <p>Total Orders</p>
+            <small class="stats-change text-success">
+              <i class="bi bi-arrow-up"></i> +18% from last month
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+      <div class="stats-card bg-gradient-info">
+        <div class="stats-card-body">
+          <div class="stats-icon">
+            <i class="bi bi-currency-dollar"></i>
+          </div>
+          <div class="stats-info">
+            <h3>${{ stats.revenue | number }}</h3>
+            <p>Revenue</p>
+            <small class="stats-change text-success">
+              <i class="bi bi-arrow-up"></i> +25% from last month
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Recent Orders</h5>
+          <a routerLink="/orders" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let order of recentOrders">
+                <td class="fw-bold">{{ order.id }}</td>
+                <td>{{ order.customer }}</td>
+                <td>${{ order.amount }}</td>
+                <td>
+                    <span class="badge bg-{{ getStatusClass(order.status) }}">
+                      {{ order.status | titlecase }}
+                    </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

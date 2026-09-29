@@ -1,0 +1,89 @@
+.page-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.stats-mini-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.stats-mini-card:hover {
+  transform: translateY(-3px);
+}
+
+.stats-mini-card.bg-primary { border-left: 4px solid #007bff; }
+.stats-mini-card.bg-success { border-left: 4px solid #28a745; }
+.stats-mini-card.bg-warning { border-left: 4px solid #ffc107; }
+.stats-mini-card.bg-info { border-left: 4px solid #17a2b8; }
+
+.stats-mini-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+  opacity: 0.7;
+}
+
+.stats-mini-card.bg-primary .stats-mini-icon { color: #007bff; }
+.stats-mini-card.bg-success .stats-mini-icon { color: #28a745; }
+.stats-mini-card.bg-warning .stats-mini-icon { color: #ffc107; }
+.stats-mini-card.bg-info .stats-mini-icon { color: #17a2b8; }
+
+.stats-mini-info h4 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.stats-mini-info span {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid #eee;
+  padding: 1.5rem;
+}
+
+.customer-avatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.table th {
+  font-weight: 600;
+  color: #555;
+  border: none;
+}
+
+.table td {
+  vertical-align: middle;
+  border-color: #f1f3f4;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+}

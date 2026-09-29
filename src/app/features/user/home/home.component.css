@@ -1,0 +1,56 @@
+.current-price {
+  font-weight: 700;
+  color: #000;      /* Màu đen đậm để gây chú ý */
+  font-size: 16px;
+  letter-spacing: -0.5px; /* Ép các con số lại gần nhau một chút nhìn sẽ rất chuyên nghiệp */
+}
+
+.product-info h4 {
+  font-family: 'Inter', sans-serif; /* Hoặc font tiêu đề bạn đang dùng */
+  font-size: 15px;                /* Kích thước vừa phải, không quá to */
+  font-weight: 600;                /* Độ dày vừa đủ để nổi bật nhưng không bị thô */
+  color: #2d3436;                  /* Màu xám cực đậm, nhìn sang hơn màu đen tuyền */
+  line-height: 1.4;                /* Tạo khoảng thở cho chữ */
+  margin-bottom: 8px;
+
+  /* Giới hạn 2 dòng để đều nhau, tránh tên dài làm vỡ layout */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+
+/* Đảm bảo đã nhúng font Inter/Be Vietnam Pro trong index.html */
+
+.countdown {
+  gap: 20px; /* Khoảng cách giữa các hộp thời gian */
+}
+
+.time-box {
+  text-align: center;
+  min-width: 80px;
+}
+
+.time-box h3 {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #000; /* Màu số */
+}
+
+.time-box h4 {
+  /* Ép font hỗ trợ tiếng Việt cho phần chữ */
+  font-family: 'Be Vietnam Pro', sans-serif !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  text-transform: none !important; /* KHÔNG dùng uppercase để tránh lỗi dấu */
+  margin-top: 5px;
+}

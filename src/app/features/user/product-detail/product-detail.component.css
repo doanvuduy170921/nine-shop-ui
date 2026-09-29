@@ -1,0 +1,70 @@
+.btn-outline-dark {
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-outline-dark.active {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.variant-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #666;
+}
+
+/* Container cho các nút biến thể */
+.variant-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* Khoảng cách giữa các nút */
+}
+
+/* Base style cho nút biến thể - Copy từ phong cách Buy Now */
+.variant-btn {
+  min-width: 100px;         /* Độ rộng tối thiểu để cân đối */
+  padding: 12px 20px;      /* Padding lớn giúp nút trông đầy đặn */
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  background-color: #fff;
+  color: #1a1a1a;
+  border: 1.5px solid #e0e0e0; /* Viền mảnh hiện đại */
+  border-radius: 8px;      /* Bo góc giống hệt nút Add to Cart */
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* Khi di chuột qua (Hover) */
+.variant-btn:hover {
+  border-color: #1a1a1a;
+  background-color: #f8f9fa;
+}
+
+/* Khi nút được chọn (Active) - Copy từ phong cách Add to Cart */
+.variant-btn.active {
+  background-color: #1a1a1a; /* Màu đen tuyền sang trọng */
+  color: #ffffff;
+  border-color: #1a1a1a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Đổ bóng nhẹ để nổi bật */
+}
+
+/* Label tiêu đề cho từng nhóm (vd: SCREEN, STORAGE) */
+.variant-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #757575;
+  margin-bottom: 8px;
+  font-weight: 700;
+}

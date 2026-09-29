@@ -1,0 +1,247 @@
+<div class="add-product-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Add New Product</h1>
+    <div class="header-actions">
+      <button class="btn-secondary" (click)="clearDraft()" type="button">Clear Draft</button>
+      <button class="btn-primary" (click)="submitProduct()" [disabled]="saving" type="button">
+        <span *ngIf="!saving">Publish Product</span>
+        <span *ngIf="saving">Publishing...</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div class="notification error" *ngIf="errorMessage">
+    <span>{{ errorMessage }}</span>
+    <button (click)="errorMessage = ''">&times;</button>
+  </div>
+  <div class="notification success" *ngIf="successMessage">
+    <span>{{ successMessage }}</span>
+    <button (click)="successMessage = ''">&times;</button>
+  </div>
+
+  <div class="form-layout">
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Basic Information -->
+      <div class="card">
+        <h2>Basic Information</h2>
+        <div class="form-group">
+          <label>Product Name <span class="required">*</span></label>
+          <input type="text" [(ngModel)]="product.name" (ngModelChange)="saveDraft()"
+                 placeholder="Enter product name" class="form-control">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Brand <span class="required">*</span></label>
+            <select [(ngModel)]="product.brand_id" (ngModelChange)="saveDraft()" class="form-control">
+              <option [value]="null">Select Brand</option>
+              <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Category <span class="required">*</span></label>
+            <select [(ngModel)]="product.category_id" (ngModelChange)="saveDraft()" class="form-control">
+              <option [value]="null">Select Category</option>
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Short Description</label>
+          <textarea [(ngModel)]="product.short_description" (ngModelChange)="saveDraft()"
+                    placeholder="Brief description (1-2 sentences)"
+                    class="form-control" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Full Description</label>
+          <textarea [(ngModel)]="product.description" (ngModelChange)="saveDraft()"
+                    placeholder="Detailed product description"
+                    class="form-control" rows="5"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" [(ngModel)]="product.status" value="active" (ngModelChange)="saveDraft()">
+              <span>Active</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" [(ngModel)]="product.status" value="inactive" (ngModelChange)="saveDraft()">
+              <span>Inactive</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Images -->
+      <div class="card">
+        <h2>Product Images</h2>
+
+        <div class="form-group">
+          <label>Thumbnail <span class="required">*</span></label>
+          <div class="image-upload-box" *ngIf="!thumbnailPreview">
+            <input type="file" #thumbnailInput accept="image/*" (change)="onThumbnailSelect($event)"
+                   style="display: none;">
+            <button type="button" (click)="thumbnailInput.click()" class="upload-btn" [disabled]="uploadingImages">
+              <span class="upload-icon">📷</span>
+              <span>Upload Thumbnail</span>
+            </button>
+          </div>
+          <div class="image-preview" *ngIf="thumbnailPreview">
+            <img [src]="thumbnailPreview" alt="Thumbnail">
+            <button type="button" class="remove-btn" (click)="removeThumbnail()">&times;</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Gallery Images</label>
+          <div class="images-grid">
+            <div class="image-preview" *ngFor="let img of imagesPreviews; let i = index">
+              <img [src]="img" alt="Product image">
+              <button type="button" class="remove-btn" (click)="removeImage(i)">&times;</button>
+            </div>
+            <div class="image-upload-box">
+              <input type="file" #imagesInput accept="image/*" multiple (change)="onImagesSelect($event)"
+                     style="display: none;">
+              <button type="button" (click)="imagesInput.click()" class="upload-btn" [disabled]="uploadingImages">
+                <span class="upload-icon">+</span>
+                <span>Add Images</span>
+              </button>
+            </div>
+          </div>
+          <p class="hint" *ngIf="uploadingImages">Uploading images...</p>
+        </div>
+      </div>
+
+      <!-- Specifications -->
+      <div class="card">
+        <h2>Specifications</h2>
+
+        <div class="spec-input-group">
+          <div class="form-group spec-key">
+            <input type="text" [(ngModel)]="newSpec.spec_key"
+                   (input)="filterSpecSuggestions()"
+                   placeholder="Specification name (e.g., CPU)"
+                   class="form-control">
+            <div class="suggestions-dropdown" *ngIf="showSpecSuggestions">
+              <div *ngFor="let suggestion of filteredSpecSuggestions"
+                   (click)="selectSpecSuggestion(suggestion)"
+                   class="suggestion-item">
+                {{ suggestion }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group spec-value">
+            <input type="text" [(ngModel)]="newSpec.spec_value"
+                   placeholder="Value (e.g., Intel Core i7)"
+                   class="form-control">
+          </div>
+          <button type="button" (click)="addSpecification()" class="btn-icon">+</button>
+        </div>
+
+        <div class="specs-list" *ngIf="product.specifications.length > 0">
+          <div class="spec-item" *ngFor="let spec of product.specifications; let i = index">
+            <span class="spec-key">{{ spec.spec_key }}:</span>
+            <span class="spec-value">{{ spec.spec_value }}</span>
+            <button type="button" class="btn-remove" (click)="removeSpecification(i)">&times;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variant Attributes -->
+      <div class="card">
+        <h2>Product Variants</h2>
+        <p class="hint">Add attributes like Color, Size, RAM to create product variants</p>
+
+        <div class="variant-input-group">
+          <div class="form-group">
+            <input type="text" [(ngModel)]="newAttribute.name"
+                   placeholder="Attribute name (e.g., Color)"
+                   class="form-control">
+          </div>
+          <div class="form-group flex-grow">
+            <input type="text" [(ngModel)]="newAttribute.values"
+                   placeholder="Values separated by comma (e.g., Red, Blue, Green)"
+                   class="form-control">
+          </div>
+          <button type="button" (click)="addVariantAttribute()" class="btn-icon">+</button>
+        </div>
+
+        <div class="attributes-list" *ngIf="variantAttributes.length > 0">
+          <div class="attribute-item" *ngFor="let attr of variantAttributes; let i = index">
+            <strong>{{ attr.name }}:</strong>
+            <div class="values-tags">
+              <span class="tag" *ngFor="let value of attr.values">{{ value }}</span>
+            </div>
+            <button type="button" class="btn-remove" (click)="removeVariantAttribute(i)">&times;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variants Table -->
+      <div class="card" *ngIf="showVariantSection || variantAttributes.length === 0">
+        <h2>Variants Details</h2>
+        <div class="variants-table-wrapper">
+          <table class="variants-table">
+            <thead>
+            <tr>
+              <th *ngFor="let key of getAttributeKeys()">{{ key }}</th>
+              <th>Price (VNĐ) <span class="required">*</span></th>
+              <th>Stock <span class="required">*</span></th>
+              <th>Image</th>
+              <th>Active</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let variant of generatedVariants; let i = index">
+              <td *ngFor="let key of getAttributeKeys()">
+                <span class="variant-attr-value">{{ variant.attributes[key] || '-' }}</span>
+              </td>
+              <td>
+                <input type="number" [(ngModel)]="variant.price" (ngModelChange)="saveDraft()"
+                       class="table-input" min="0" step="1000">
+              </td>
+              <td>
+                <input type="number" [(ngModel)]="variant.stock_quantity" (ngModelChange)="saveDraft()"
+                       class="table-input" min="0">
+              </td>
+              <td>
+                <img *ngIf="variant.images" [src]="variant.images" alt="Variant" class="variant-img">
+              </td>
+              <td>
+                <label class="switch">
+                  <input type="checkbox" [(ngModel)]="variant.is_active" (ngModelChange)="saveDraft()">
+                  <span class="slider"></span>
+                </label>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar (Optional: Preview or Quick Info) -->
+    <div class="sidebar">
+      <div class="card sticky">
+        <h3>Publishing</h3>
+        <div class="status-info">
+          <p><strong>Status:</strong> {{ product.status }}</p>
+          <p><strong>Variants:</strong> {{ generatedVariants.length }}</p>
+          <p><strong>Images:</strong> {{ product.images.length + (product.thumbnail ? 1 : 0) }}</p>
+        </div>
+        <button class="btn-primary btn-block" (click)="submitProduct()" [disabled]="saving">
+          <span *ngIf="!saving">Publish Product</span>
+          <span *ngIf="saving">Publishing...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
