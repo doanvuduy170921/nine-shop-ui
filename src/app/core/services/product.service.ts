@@ -9,7 +9,7 @@ import {
   ProductPagination, Top8SellerResponse,
   UploadImageResponse
 } from '../models/product.model';
-import {API_BASE_URL} from "../../../../environment.prod";
+import {environment} from "../../../environments/environment";
 
 interface Variant {
   id: number;
@@ -24,8 +24,8 @@ interface Variant {
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = '${API_BASE_URL}/product';
-  private imageApiUrl = '${API_BASE_URL}/media';
+  private apiUrl = `${environment.apiUrl}/product`;
+  private imageApiUrl = `${environment.apiUrl}/media`;
 
   constructor(private http: HttpClient) {}
 
@@ -144,7 +144,7 @@ export class ProductService {
     });
 
     return this.http.get<{ data: Variant[], message: string, success: boolean }>(
-      `${API_BASE_URL}/product/list-variant/${productId}`,
+      `${environment.apiUrl}/product/list-variant/${productId}`,
       { headers }
     );
   }
@@ -158,7 +158,7 @@ export class ProductService {
     });
 
     return this.http.patch(
-      `${API_BASE_URL}/product/variant/${variantId}/status`,
+      `${environment.apiUrl}/product/variant/${variantId}/status`,
       { is_active: isActive },
       { headers }
     );

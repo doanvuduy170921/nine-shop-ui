@@ -11,16 +11,16 @@ import {
   OrderDetailForMyOrder, PreViewOrderItem, OrderTracking, OrderDetailItem,
 } from '../models/order.model';
 import {ApiResponse} from "../models/product.model";
-import {API_BASE_URL} from "../../../../environment.prod";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private baseUrl = '${API_BASE_URL}/order';
-  private apiUrl = '${API_BASE_URL}/order-item/get-all';
-  private apiUrlForAdmin = '${API_BASE_URL}/order/get-all';
-  private apiUrlForMyOrder = '${API_BASE_URL}/order/view-detail-for-my-order';
+  private baseUrl = `${environment.apiUrl}/order`;
+  private apiUrl = `${environment.apiUrl}/order-item/get-all`;
+  private apiUrlForAdmin = `${environment.apiUrl}/order/get-all`;
+  private apiUrlForMyOrder = `${environment.apiUrl}/order/view-detail-for-my-order`;
   constructor(private http: HttpClient) {}
 
   getMyOrders(): Observable<Order[]> {
@@ -64,7 +64,7 @@ export class OrderService {
         product_thumbnail: item.product_thumbnail,
         quantity: item.quantity,
         item_price: item.item_price,
-        sku: `PRD-${item.product_id}` // Generate SKU
+        sku: `PRD-${item.product_id}`
       });
     });
 
@@ -81,7 +81,7 @@ export class OrderService {
   }
   getOrderDetail(orderId: number): Observable<OrderDetailResponse[]> {
     return this.http.get<{ data: OrderDetailResponse[] }>(
-      `${API_BASE_URL}/order/${orderId}`,
+      `${environment.apiUrl}/order/${orderId}`,
       { headers: this.getAuthHeaders() }
     ).pipe(
       map(res => res.data)
@@ -90,18 +90,18 @@ export class OrderService {
 
   updateOrderStatus(body: { status: string; order_id: number }) {
     return this.http.put(
-      `${API_BASE_URL}/order/update`,
+      `${environment.apiUrl}/order/update`,
       body,
       { headers: this.getAuthHeaders(), observe: 'response' }
     );
   }
 
-  // API 1: Lấy danh sách order của user
+
   getAllOrdersByUser(
     page: number = 1,
     limit: number = 10,
     status?: string,
-    search?: string  // tìm theo Order ID
+    search?: string
   ): Observable<ApiResponse<PreViewOrderItem[]>> {
     let url = `${this.baseUrl}/get-all-by-user?page=${page}&limit=${limit}`;
 
@@ -111,8 +111,6 @@ export class OrderService {
 
     if (search && search.trim() !== '') {
       url += `&search=${encodeURIComponent(search.trim())}`;
-      // Nếu backend dùng tên param khác, ví dụ: &orderId=... hoặc &id=...
-      // thì sửa thành: url += `&orderId=${encodeURIComponent(search.trim())}`;
     }
 
     return this.http.get<ApiResponse<PreViewOrderItem[]>>(url, {
