@@ -26,18 +26,30 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/doanvuduy170921/nines-shop-ui:latest
+          tags: |
+            ghcr.io/doanvuduy170921/nines-shop-ui:latest
+            ghcr.io/doanvuduy170921/nines-shop-ui:sha-${{ github.sha }}
 
   deploy-ui:
     needs: build-ui
     runs-on: self-hosted
     steps:
+      # This was the missing step causing "No such file or directory": without
+      # a checkout, nothing exists yet in this job's workspace to cd into.
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: doanvuduy170921/nineshop-infra
+          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          path: infra
+
       - name: Pull latest UI image and update via Docker Compose
         run: |
-          cd /home/runner/actions-runner/actions-runner/_work/nines-shop/nines-shop/infra
+          # $GITHUB_WORKSPACE is always correct for the runner that is
+          # actually executing this job — never hardcode an absolute path.
+          cd "$GITHUB_WORKSPACE/infra"
 
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
 
           docker compose -f docker-compose.prod.yml pull frontend
           docker compose -f docker-compose.prod.yml up -d --no-deps frontend
