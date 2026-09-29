@@ -4,13 +4,14 @@ import { Observable, BehaviorSubject, map } from 'rxjs';
 import { TokenStorageService } from './token-storage.service';
 import {RegisterData, RegisterRequest} from "../models/user.model";
 import {ApiResponse} from "../models/product.model";
-import {API_BASE_URL} from "../../../../environment.prod";
+import {environment} from "../../../environments/environment";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${API_BASE_URL}/auth`;
+  private apiUrl = `${environment.apiUrl}/auth`;
 
 
   private authStatus = new BehaviorSubject<boolean>(this.isAuthenticated());
@@ -89,6 +90,6 @@ export class AuthService {
   }
 
   validateRegisterOtp(data: {otp: string, email: string}): Observable<any> {
-    return this.http.post(`${API_BASE_URL}/auth/validate-otp`, data);
+    return this.http.post(`${environment.apiUrl}/auth/validate-otp`, data);
   }
 }
