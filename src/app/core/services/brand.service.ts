@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Brand} from "../models/brand.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class BrandService {
       'Content-Type': 'application/json'
     });
   }
-  private apiUrl = '${API_BASE_URL}/brand/get-all';
+  private apiUrl = `${environment.apiUrl}/brand/get-all`;
 
   constructor(private http: HttpClient) { }
 

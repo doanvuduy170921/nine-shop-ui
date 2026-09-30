@@ -11,12 +11,13 @@ import {
   UpdateAllCartResponse
 } from '../models/cart.model';
 import {ApiResponse} from "../models/product.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = '${API_BASE_URL}/cart';
+  private apiUrl = `${environment.apiUrl}/cart`;
 
   constructor(private http: HttpClient) {}
 

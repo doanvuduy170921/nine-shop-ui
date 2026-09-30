@@ -7,12 +7,13 @@ import {
   UsersResponse
 } from '../models/user.model';
 import {ApiResponse} from "../models/product.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = '${API_BASE_URL}/user';
+  private apiUrl = `${environment.apiUrl}/user`;
 
   constructor(private http: HttpClient) {}
 

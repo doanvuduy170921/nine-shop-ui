@@ -9,13 +9,14 @@ import {
   ValidateOtpRequest,
   ValidateOtpResponse
 } from "../models/pending_order.model";
+import {environment} from "../../../environments/environment";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class PendingOrderService {
-  private apiUrl = '${API_BASE_URL}/pending-order';
+  private apiUrl = `${environment.apiUrl}/pending-order`;
 
   constructor(private http: HttpClient) {}
 

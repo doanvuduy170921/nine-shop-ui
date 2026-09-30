@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category.model';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,13 @@ export class CategoryService {
       'Content-Type': 'application/json'
     });
   }
-  private apiUrl = '${API_BASE_URL}/category/get-all';
+  private apiUrl = `${environment.apiUrl}/category/get-all`;
 
   constructor(private http: HttpClient) { }
 
   getAllCategories(): Observable<{ data: Category[], message: string, success: boolean }> {
     return this.http.get<{ data: Category[], message: string, success: boolean; }>(
-      '${API_BASE_URL}/category/get-all',
+      `${environment.apiUrl}/category/get-all`,
       {
         headers: this.getAuthHeaders()
       }
