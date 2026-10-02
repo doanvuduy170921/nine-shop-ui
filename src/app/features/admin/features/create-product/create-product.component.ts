@@ -6,6 +6,7 @@ import { CategoryService } from "../../../../core/services/category.service";
 import { BrandService } from "../../../../core/services/brand.service";
 
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {environment} from "../../../../../environments/environment";
 
 interface Specification {
   spec_key: string;
@@ -18,14 +19,13 @@ interface VariantAttribute {
   values: string[];
 }
 
-// Định nghĩa Variant cho mục đích hiển thị/tạo mới (cho phép thiếu ID/SKU trước khi lưu)
 export interface Variant {
-  id?: number; // Optional vì khi tạo mới chưa có ID
-  sku?: string; // Optional vì có thể tự gen hoặc nhập sau
+  id?: number;
+  sku?: string;
   attributes: { [key: string]: string };
   price: number;
   stock_quantity: number;
-  images: string[]; // Chuyển từ image sang images (mảng)
+  images: string[];
   is_active: boolean;
 }
 
@@ -132,7 +132,7 @@ export class CreateProductComponent implements OnInit {
     });
 
     this.http.post<{ data: string[], message: string, success: boolean }>(
-      '${API_BASE_URL}/media/upload',
+      `${environment.apiUrl}/media/upload`,
       formData,
       { headers }
     ).subscribe({
@@ -229,13 +229,12 @@ export class CreateProductComponent implements OnInit {
   }
 
   generateVariants(): void {
-    // Nếu không có thuộc tính nào, tạo 1 variant mặc định
     if (this.variantAttributes.length === 0) {
       this.generatedVariants = [{
         attributes: {},
         price: 0,
         stock_quantity: 0,
-        images: this.product.thumbnail ? [this.product.thumbnail] : [], // Fix: Bọc trong mảng
+        images: this.product.thumbnail ? [this.product.thumbnail] : [],
         is_active: true
       }];
       return;
@@ -251,7 +250,6 @@ export class CreateProductComponent implements OnInit {
         attributes[this.variantAttributes[index].name] = value;
       });
 
-      // Kiểm tra xem variant này đã tồn tại trong danh sách cũ chưa để giữ lại giá/kho
       const existing = this.generatedVariants.find(v =>
         JSON.stringify(v.attributes) === JSON.stringify(attributes)
       );
@@ -260,7 +258,7 @@ export class CreateProductComponent implements OnInit {
         attributes,
         price: 0,
         stock_quantity: 0,
-        images: this.product.thumbnail ? [this.product.thumbnail] : [], // Fix: Bọc trong mảng
+        images: this.product.thumbnail ? [this.product.thumbnail] : [],
         is_active: true
       };
     });
@@ -323,7 +321,6 @@ export class CreateProductComponent implements OnInit {
     this.saving = true;
     this.errorMessage = '';
 
-    // Gom logic tạo payload vào một object sạch sẽ
     const payload = this.preparePayload();
 
     const token = localStorage.getItem('access_token');
@@ -332,7 +329,7 @@ export class CreateProductComponent implements OnInit {
       'Content-Type': 'application/json'
     });
 
-    this.http.post('${API_BASE_URL}/product/add', payload, { headers })
+    this.http.post(`${environment.apiUrl}/product/add`, payload, { headers })
       .subscribe({
         next: () => {
           this.showSuccess('Product created successfully!');
@@ -348,7 +345,6 @@ export class CreateProductComponent implements OnInit {
       });
   }
 
-// Phương thức hỗ trợ chuẩn hóa dữ liệu trước khi gửi
   private preparePayload() {
     return {
       ...this.product,
@@ -363,8 +359,6 @@ export class CreateProductComponent implements OnInit {
         attributes: v.attributes,
         price: Number(v.price),
         stock_quantity: Number(v.stock_quantity),
-        // Backend yêu cầu field 'image' (string) hay 'images' (array)?
-        // Dựa trên response trước của bạn, tôi giữ 'images' làm mảng.
         images: v.images && v.images.length > 0 ? v.images : [this.product.thumbnail],
         is_active: v.is_active
       }))

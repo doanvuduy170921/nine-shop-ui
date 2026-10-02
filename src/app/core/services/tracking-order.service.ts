@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {TrackingOrderResponse, TrackingOrderResponseV2} from '../models/tracking-order.model';
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackingOrderService {
 
-  private baseUrl = '${API_BASE_URL}/order/get-tracking';
-  private baseUrlV2 = '${API_BASE_URL}/order/get-tracking-v2';
+  private baseUrl = `${environment.apiUrl}/order/get-tracking`;
+  private baseUrlV2 = `${environment.apiUrl}/order/get-tracking-v2`;
 
   constructor(private http: HttpClient) {}
 
