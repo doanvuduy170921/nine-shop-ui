@@ -118,7 +118,6 @@ export class OrderService {
     });
   }
 
-  // API 2: Lấy tracking của một order
   getOrderTracking(orderId: number): Observable<ApiResponse<OrderTracking[]>> {
     return this.http.get<ApiResponse<OrderTracking[]>>(
       `${this.baseUrl}/get-tracking-v2/${orderId}`,
@@ -126,7 +125,6 @@ export class OrderService {
     );
   }
 
-  // API 3: Xem chi tiết order (danh sách sản phẩm)
   viewOrderDetailForMyOrder(orderId: number): Observable<ApiResponse<OrderDetailItem[]>> {
     return this.http.get<ApiResponse<OrderDetailItem[]>>(
       `${this.baseUrl}/view-detail-for-my-order/${orderId}`,

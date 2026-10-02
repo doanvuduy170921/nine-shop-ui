@@ -6,7 +6,6 @@ import {
   UpdateUserResponse,
   UsersResponse
 } from '../models/user.model';
-import {ApiResponse} from "../models/product.model";
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -35,7 +34,7 @@ export class UserService {
   softDeleteUser(userUuid: string): Observable<any> {
     return this.http.put(
       `${this.apiUrl}/soft-delete/${userUuid}`,
-      {}, // body rỗng vì backend chỉ cần UUID
+      {},
       { headers: this.getAuthHeaders() }
     );
   }
@@ -48,7 +47,6 @@ export class UserService {
     );
   }
 
-// Thêm method để lấy thông tin 1 user
   getUserByUuid(userUuid: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/get/${userUuid}`, {
       headers: this.getAuthHeaders()
