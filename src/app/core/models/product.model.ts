@@ -108,7 +108,7 @@ export interface ProductTrendingItem {
   thumbnail: string;
   min_price: number;
   brand_name: string;
-  slug?: string; // Thêm slug nếu Backend của bạn có trả về để làm link
+  slug?: string;
 }
 
 export interface GetTop3TrendingRes {
@@ -125,7 +125,7 @@ export interface ProductVariant {
   price: number;
   stock_quantity: number;
   attributes: {
-    [key: string]: string; // Ví dụ: { "Screen": "FHD+ IPS", "Storage": "512GB SSD" }
+    [key: string]: string;
   };
 }
 

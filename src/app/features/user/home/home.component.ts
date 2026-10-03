@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
 
   private subscription!: Subscription;
 
-  // Ngày kết thúc (Bạn có thể đổi ngày tại đây)
   public endDate = new Date('2026-12-31T23:59:59');
 
   public days: number = 0;
@@ -31,7 +30,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadHomeData()
-    // Chạy mỗi giây một lần
     this.subscription = interval(1000).subscribe(() => {
       this.calculateTime();
     });
@@ -41,7 +39,7 @@ export class HomeComponent implements OnInit {
     this.productService.getTop3Trending().subscribe(
       (res) => {
         this.trendingData = res.data;
-        this.top3Thumbnail = res.data.images; // Gán mảng ảnh vào đây để HTML cũ không bị lỗi
+        this.top3Thumbnail = res.data.images;
         this.screens = res.data.screens.slice(0,3);
         this.laptops = res.data.laptops.slice(0,3);
         this.keyboards = res.data.keyboards;
