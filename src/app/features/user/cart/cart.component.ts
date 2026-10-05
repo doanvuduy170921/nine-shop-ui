@@ -16,21 +16,18 @@ export class CartComponent implements OnInit {
 
   selectedShipping: 'standard' | 'express' | 'free' = 'standard';
 
-  // THAY ĐỔI: Mapping tên shipping
   shippingMethodNames = {
     standard: 'Standard Delivery',
     express: 'Express Delivery',
     free: 'Free Shipping'
   };
 
-  // GIỮ LẠI ĐỂ HIỂN THỊ TRONG UI (chỉ để reference)
   shippingFees = {
-    standard: 4.99,
-    express: 12.99,
+    standard: 30000,
+    express: 50000,
     free: 0
   };
 
-  // THAY ĐỔI: Không tính local nữa, sẽ lấy từ API
   tax = this.getSubtotal() * 0.01;
   calculatedSubtotal = 0;
   calculatedShipping = 0;
@@ -97,7 +94,6 @@ export class CartComponent implements OnInit {
     const item = this.cartItems[index];
 
     if (item.quantity > 1) {
-      // Nếu số lượng > 1 thì giảm bình thường
       item.quantity--;
       this.calculatedSubtotal = this.getLocalSubtotal();
     } else {
@@ -108,8 +104,6 @@ export class CartComponent implements OnInit {
   removeItem(variantId: number, index: number): void {
     if (confirm(`Bạn có chắc muốn xóa sản phẩm này?`)) {
       this.isLoading = true;
-
-      // TRUYỀN variantId vào đây
       this.cartService.deleteCartItem(variantId).subscribe({
         next: () => {
           this.cartItems.splice(index, 1);
