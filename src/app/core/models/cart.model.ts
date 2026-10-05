@@ -19,16 +19,16 @@ export interface AddToCartResponse {
 }
 
 export interface CartProductItem {
-  cart_id: number;     // Khớp với JSON
-  variant_id: number;  // Cực kỳ quan trọng
+  cart_id: number;
+  variant_id: number;
   product_id: number;
   name: string;
   quantity: number;
   thumbnail: string;
   price: number;
   sku: string;
-  attributes: { [key: string]: string }; // Lưu Color, Size...
-  stock_quantity: number; // Nên trả thêm từ backend để validate
+  attributes: { [key: string]: string };
+  stock_quantity: number;
 }
 
 export interface GetCartResponse {
@@ -46,7 +46,7 @@ export interface UpdateAllCartItem {
 
 export interface UpdateAllCartRequest {
   items: UpdateAllCartItem[];
-  shipping_method: string; // THÊM SHIPPING METHOD
+  shipping_method: string;
 }
 
 // CẬP NHẬT RESPONSE

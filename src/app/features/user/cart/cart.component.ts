@@ -68,8 +68,28 @@ export class CartComponent implements OnInit {
   // 1. Tăng số lượng (Sử dụng cart_id hoặc index)
   increaseQuantity(index: number): void {
     const item = this.cartItems[index];
-    // Lưu ý: Đảm bảo backend có trả về stock_quantity trong API get-all
-    item.quantity++;
+    if (item.quantity < item.stock_quantity) {
+      item.quantity++;
+      this.calculatedSubtotal = this.getLocalSubtotal();
+    } else {
+      this.toastService.warning('Giới hạn kho', 'Số lượng đã đạt tối đa trong kho');
+    }
+  }
+
+  onQuantityInputChange(index: number, event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    let val = parseInt(inputElement.value, 10);
+    const item = this.cartItems[index];
+
+    if (isNaN(val) || val < 1) {
+      val = 1;
+    } else if (val > item.stock_quantity) {
+      val = item.stock_quantity;
+      this.toastService.warning('Giới hạn kho', `Chỉ còn lại ${item.stock_quantity} sản phẩm trong kho`);
+    }
+
+    item.quantity = val;
+    inputElement.value = val.toString(); // Đồng bộ lại giao diện input
     this.calculatedSubtotal = this.getLocalSubtotal();
   }
 
@@ -80,17 +100,12 @@ export class CartComponent implements OnInit {
       // Nếu số lượng > 1 thì giảm bình thường
       item.quantity--;
       this.calculatedSubtotal = this.getLocalSubtotal();
-      // Chỗ này bạn nên cân nhắc gọi API update số lượng luôn nếu muốn đồng bộ ngay lập tức
     } else {
-      // Nếu số lượng = 1 mà bấm giảm, gọi hàm xóa
-      // THAY ĐỔI: Truyền item.variant_id thay vì item.cart_id
       this.removeItem(item.variant_id, index);
     }
   }
 
-  // 2. Xóa item (Sử dụng cart_id thay vì product_id)
-  // Trong file cart.component.ts
-  removeItem(variantId: number, index: number): void { // Đổi tên biến cho rõ nghĩa
+  removeItem(variantId: number, index: number): void {
     if (confirm(`Bạn có chắc muốn xóa sản phẩm này?`)) {
       this.isLoading = true;
 
