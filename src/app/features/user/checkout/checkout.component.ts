@@ -147,7 +147,7 @@ export class CheckoutComponent implements OnInit {
       }))
     };
 
-    console.log('Sending Order Request:', orderRequest); // Debug để kiểm tra body trước khi gửi
+    console.log('Sending Order Request:', orderRequest);
 
     this.pendingOrderService.createPendingOrder(orderRequest).subscribe({
       next: (response) => {
@@ -174,9 +174,11 @@ export class CheckoutComponent implements OnInit {
         // ✅ COD → validate OTP
         this.router.navigate(['/validate-otp']);
       },
-      error: () => {
-        this.errorMessage = 'Không thể tạo đơn hàng';
+      error: (error) => {
+        const backendMessage = error.error?.error || error.error?.message;
+        this.errorMessage = backendMessage || 'Không thể tạo đơn hàng';
         this.isLoading = false;
+        console.error('Error creating pending order:', error);
       }
     });
   }
