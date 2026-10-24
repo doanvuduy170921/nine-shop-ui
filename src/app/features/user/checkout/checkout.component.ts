@@ -175,14 +175,20 @@ export class CheckoutComponent implements OnInit {
         this.router.navigate(['/validate-otp']);
       },
       error: (err) => {
-        if (err.error && err.error.message) {
-          this.errorMessage = err.error.message;
+        console.error('Full Error Object:', err); // In ra để xem cấu trúc thật trên F12
+
+        // Thử kiểm tra các trường hợp cấu trúc lỗi phổ biến từ backend
+        if (typeof err.error === 'string') {
+          this.errorMessage = err.error; // Nếu backend trả về string thô
+        } else if (err.error && err.error.message) {
+          this.errorMessage = err.error.message; // Nếu là { message: "..." }
+        } else if (err.error && err.error.error) {
+          this.errorMessage = err.error.error; // Nếu là { error: "..." }
         } else {
           this.errorMessage = 'Không thể tạo đơn hàng';
         }
 
         this.isLoading = false;
-        console.error('Error creating pending order:', err);
       }
     });
   }

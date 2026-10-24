@@ -30,32 +30,31 @@
         </div>
       </div>
 
-      <div class="hero-visuals">
-<!--        Product 1-->
+      <div class="hero-visuals" *ngIf="top3Thumbnail && top3Thumbnail.length >= 3">
+        <!--        Product 1-->
         <div class="product-showcase">
           <div class="product-card featured"
-               [routerLink]="['/product-detail',top3Thumbnail[0].slug]"
+               [routerLink]="['/product-detail', top3Thumbnail[0]?.slug]"
                style="cursor: pointer">
-            <img [src]="top3Thumbnail[0].thumbnail" alt="Earphone 1" class="img-fluid">
+            <img [src]="top3Thumbnail[0]?.thumbnail" alt="Earphone 1" class="img-fluid">
             <div class="product-badge">Best Seller</div>
             <div class="product-info">
-              <h4></h4>
+              <h4>{{ top3Thumbnail[0]?.name }}</h4>
               <div class="price" >
-                <span class="sale-price"></span>
-                <span class="original-price"></span>
+                <span class="sale-price">{{ top3Thumbnail[0]?.min_price | currency }}</span>
               </div>
             </div>
           </div>
-<!--            Product 2-->
+          <!--            Product 2-->
           <div class="product-grid">
-            <div class="product-mini"  [routerLink]="['/product-detail',top3Thumbnail[1].slug]" >
-              <img [src]="top3Thumbnail[1].thumbnail" alt="Product" class="img-fluid">
-              <span class="mini-price"></span>
+            <div class="product-mini" [routerLink]="['/product-detail', top3Thumbnail[1]?.slug]" >
+              <img [src]="top3Thumbnail[1]?.thumbnail" alt="Product" class="img-fluid">
+              <span class="mini-price">{{ top3Thumbnail[1]?.min_price | currency }}</span>
             </div>
-<!--            Product 3-->
-            <div class="product-mini"  [routerLink]="['/product-detail',top3Thumbnail[2].slug]">
-              <img [src]="top3Thumbnail[2].thumbnail" alt="Product" class="img-fluid" >
-              <span class="mini-price"></span>
+            <!--            Product 3-->
+            <div class="product-mini" [routerLink]="['/product-detail', top3Thumbnail[2]?.slug]">
+              <img [src]="top3Thumbnail[2]?.thumbnail" alt="Product" class="img-fluid" >
+              <span class="mini-price">{{ top3Thumbnail[2]?.min_price | currency }}</span>
             </div>
           </div>
         </div>

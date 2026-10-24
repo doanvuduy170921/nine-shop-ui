@@ -59,6 +59,11 @@ export class HomeComponent implements OnInit {
       this.hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       this.seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    } else {
+      this.days = 0;
+      this.hours = 0;
+      this.minutes = 0;
+      this.seconds = 0;
     }
   }
 
