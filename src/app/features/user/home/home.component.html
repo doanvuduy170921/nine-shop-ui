@@ -39,9 +39,9 @@
             <img [src]="top3Thumbnail[0]?.thumbnail" alt="Earphone 1" class="img-fluid">
             <div class="product-badge">Best Seller</div>
             <div class="product-info">
-              <h4>{{ top3Thumbnail[0]?.name }}</h4>
+              <h4></h4>
               <div class="price" >
-                <span class="sale-price">{{ top3Thumbnail[0]?.min_price | currency }}</span>
+                <span class="sale-price"></span>
               </div>
             </div>
           </div>
@@ -49,12 +49,12 @@
           <div class="product-grid">
             <div class="product-mini" [routerLink]="['/product-detail', top3Thumbnail[1]?.slug]" >
               <img [src]="top3Thumbnail[1]?.thumbnail" alt="Product" class="img-fluid">
-              <span class="mini-price">{{ top3Thumbnail[1]?.min_price | currency }}</span>
+              <span class="mini-price"></span>
             </div>
             <!--            Product 3-->
             <div class="product-mini" [routerLink]="['/product-detail', top3Thumbnail[2]?.slug]">
               <img [src]="top3Thumbnail[2]?.thumbnail" alt="Product" class="img-fluid" >
-              <span class="mini-price">{{ top3Thumbnail[2]?.min_price | currency }}</span>
+              <span class="mini-price"></span>
             </div>
           </div>
         </div>
