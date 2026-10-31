@@ -152,7 +152,6 @@ export class CategoryComponent implements OnInit {
       filters.brand_id = this.selectedBrand;
     }
 
-    // Thêm price range nếu có
     if (this.minPrice !== null) {
       filters.min_price = this.minPrice;
     }
@@ -160,9 +159,6 @@ export class CategoryComponent implements OnInit {
       filters.max_price = this.maxPrice;
     }
 
-    console.log('🔍 Calling API with filters:', filters);
-
-    // Gọi API
     this.productService.getProductsByFilter(filters).subscribe({
       next: (response) => {
         this.isLoadingProducts = false;
@@ -173,11 +169,6 @@ export class CategoryComponent implements OnInit {
           this.totalPages = response.data.TotalPage || 0;
           this.currentPage = response.data.Page || 1;
 
-          console.log('✅ Products loaded:', {
-            count: this.products.length,
-            total: this.totalProducts,
-            pages: this.totalPages
-          });
         } else {
           this.products = [];
           this.totalProducts = 0;
@@ -196,7 +187,7 @@ export class CategoryComponent implements OnInit {
   // ✅ Category selection handler
   onCategorySelect(categoryId: number): void {
     this.selectedCategory = this.selectedCategory === categoryId ? null : categoryId;
-    this.currentPage = 1; // Reset về trang 1
+    this.currentPage = 1;
     this.loadFilteredProducts();
   }
 
@@ -283,12 +274,11 @@ export class CategoryComponent implements OnInit {
     return pages;
   }
 
-// ✅ Thêm method xử lý click brand
+
   onBrandDemoSelect(brandId: number | null): void {
     // Nếu click lại brand đang chọn → bỏ chọn (toggle)
     this.selectedBrand = this.selectedBrand === brandId ? null : brandId;
 
-    // Reset về trang 1 và gọi API ngay lập tức
     this.currentPage = 1;
     this.loadFilteredProducts();
   }

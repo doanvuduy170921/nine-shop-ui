@@ -46,7 +46,7 @@ export class CreateUserComponent implements OnInit {
     this.isLoadingData = true;
     this.userService.getUserByUuid(this.userUuid).subscribe({
       next: (response) => {
-        console.log('User data loaded:', response);
+
         const user = response.data;
 
         // Đổ data vào form với is_active là boolean
@@ -56,7 +56,7 @@ export class CreateUserComponent implements OnInit {
           phone: user.phone,
           address: user.address,
           role: user.role,
-          is_active: user.is_active === true || user.is_active === 'true' // Đảm bảo là boolean
+          is_active: user.is_active === true || user.is_active === 'true'
         });
 
         this.isLoadingData = false;
@@ -73,12 +73,8 @@ export class CreateUserComponent implements OnInit {
   onSubmit(): void {
     if (this.createUserForm.valid) {
       this.isLoading = true;
-
-      // Lấy giá trị is_active và chuyển sang boolean
       const isActiveValue = this.createUserForm.value.is_active;
       let isActiveBool: boolean;
-
-      // Xử lý tất cả các trường hợp có thể
       if (typeof isActiveValue === 'boolean') {
         isActiveBool = isActiveValue;
       } else if (typeof isActiveValue === 'string') {
@@ -93,30 +89,21 @@ export class CreateUserComponent implements OnInit {
         phone: this.createUserForm.value.phone,
         address: this.createUserForm.value.address,
         role: this.createUserForm.value.role,
-        is_active: isActiveBool // Đảm bảo luôn là boolean
+        is_active: isActiveBool
       };
 
-      console.log('Updating user with data:', userData);
-      console.log('is_active type:', typeof userData.is_active);
-      console.log('is_active value:', userData.is_active);
 
       this.userService.updateUser(this.userUuid, userData).subscribe({
         next: (response) => {
-          console.log('User updated successfully:', response);
           alert('User updated successfully!');
           this.router.navigate(['/admin/users-list']);
           this.isLoading = false;
         },
         error: (error) => {
           console.error('Error updating user:', error);
-          console.log('=== ERROR DETAILS ===');
-          console.log('Error details:', error.error);
-          console.log('Error errors:', error.error?.errors);
-          console.log('Error message:', error.error?.message);
-
           let errorMessage = 'Failed to update user: ';
           if (error.error?.errors) {
-            // Hiển thị các lỗi validation
+
             const errors = Object.values(error.error.errors).join(', ');
             errorMessage += errors;
           } else if (error.error?.message) {

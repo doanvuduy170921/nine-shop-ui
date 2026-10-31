@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
         this.laptops = res.data.laptops.slice(0,3);
         this.keyboards = res.data.keyboards;
         this.mouses = res.data.mouses;
-        console.log('Dữ liệu trang chủ:', this.trendingData);
       },
       (err) => console.error(err)
     );

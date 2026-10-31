@@ -111,9 +111,6 @@ export class ProductService {
     if (filters.limit !== undefined && filters.limit !== null) {
       params = params.set('limit', filters.limit.toString());
     }
-
-    console.log('📡 API Request:', `${this.apiUrl}/get-by-filter?${params.toString()}`);
-
     return this.http.get<ApiResponse<ProductPagination>>(`${this.apiUrl}/get-by-filter`, {
       headers: this.getAuthHeaders(),
       params

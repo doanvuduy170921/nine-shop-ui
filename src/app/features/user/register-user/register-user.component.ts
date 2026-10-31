@@ -52,8 +52,6 @@ export class RegisterUserComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        console.log('Error response:', error);
-
         const serverError = error.error;
 
         if (serverError) {

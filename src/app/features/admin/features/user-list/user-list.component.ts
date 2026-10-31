@@ -73,11 +73,9 @@ export class UserListComponent implements OnInit {
           this.currentPage = data.Page;
           this.totalPages = data.TotalPage;
 
-          // Tạo danh sách trang (hiển thị tối đa 5 trang)
           const start = Math.max(1, this.currentPage - 2);
           const end = Math.min(this.totalPages, start + 4);
           this.pages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-          console.log(this.users)
         } else {
           this.users = [];
         }

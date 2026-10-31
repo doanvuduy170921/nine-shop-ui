@@ -33,7 +33,6 @@ export class OrderListComponent implements OnInit {
     this.isLoading = true;
     this.orderService.getAllOrders().subscribe({
       next: (res) => {
-        console.log("ORDER RESPONSE = ", res);
         this.orders = res.data;
         this.calculateStats();
         this.isLoading = false;

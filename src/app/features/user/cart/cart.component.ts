@@ -158,13 +158,12 @@ export class CartComponent implements OnInit {
     return this.getSubtotal() > 300;
   }
 
-  // HÀM PROCEED TO CHECKOUT - GỌI API VÀ LƯU DATA
   proceedToCheckout(): void {
     if (this.cartItems.length === 0) return;
 
     const updateRequest: UpdateAllCartRequest = {
       items: this.cartItems.map(item => ({
-        variant_id: item.variant_id, // SỬA TỪ product_id -> variant_id
+        variant_id: item.variant_id,
         quantity: item.quantity,
         price: item.price
       })),
@@ -173,9 +172,6 @@ export class CartComponent implements OnInit {
 
     this.cartService.updateAllCart(updateRequest).subscribe({
       next: (response) => {
-        console.log('Cart updated successfully:', response);
-
-        // Lưu summary data vào localStorage để checkout page sử dụng
         const checkoutSummary: CheckoutSummary = {
           items: this.cartItems,
           subtotal: response.data.subtotal,
@@ -189,12 +185,11 @@ export class CartComponent implements OnInit {
 
         this.isLoading = false;
 
-        // Chuyển sang trang checkout
         this.router.navigate(['/checkout']);
       },
       error: (error) => {
         console.error('Error updating cart:', error);
-        this.errorMessage = 'Không thể cập nhật giỏ hàng. Vui lòng thử lại.';
+        this.errorMessage = 'Can not update your card, Please retry!';
         this.isLoading = false;
       }
     });

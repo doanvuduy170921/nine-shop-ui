@@ -147,8 +147,6 @@ export class CheckoutComponent implements OnInit {
       }))
     };
 
-    console.log('Sending Order Request:', orderRequest);
-
     this.pendingOrderService.createPendingOrder(orderRequest).subscribe({
       next: (response) => {
         if (!response.success) {
@@ -175,9 +173,9 @@ export class CheckoutComponent implements OnInit {
         this.router.navigate(['/validate-otp']);
       },
       error: (err) => {
-        console.error('Full Error Object:', err); // In ra để xem cấu trúc thật trên F12
+        console.error('Full Error Object:', err);
 
-        // Thử kiểm tra các trường hợp cấu trúc lỗi phổ biến từ backend
+
         if (typeof err.error === 'string') {
           this.errorMessage = err.error; // Nếu backend trả về string thô
         } else if (err.error && err.error.message) {

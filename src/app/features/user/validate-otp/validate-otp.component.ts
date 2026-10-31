@@ -78,7 +78,6 @@ export class ValidateOtpComponent implements OnInit {
       p_order_id: this.pendingOrderId
     }).subscribe({
       next: (response) => {
-        console.log('OTP validated successfully:', response);
         this.isLoading = false;
         this.isVerified = true;
 
