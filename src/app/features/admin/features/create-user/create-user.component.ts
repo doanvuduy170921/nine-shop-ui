@@ -62,7 +62,7 @@ export class CreateUserComponent implements OnInit {
         this.isLoadingData = false;
       },
       error: (error) => {
-        console.error('Error loading user:', error);
+
         alert('Failed to load user data: ' + (error.error?.message || 'Unknown error'));
         this.isLoadingData = false;
         this.router.navigate(['/admin/users-list']);
@@ -100,7 +100,6 @@ export class CreateUserComponent implements OnInit {
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Error updating user:', error);
           let errorMessage = 'Failed to update user: ';
           if (error.error?.errors) {
 

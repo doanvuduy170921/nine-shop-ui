@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
+    // Lấy giá trị từ form
     const credentials = {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe({
       next: (response) => {
 
+        // Lấy role từ response
         const role = response.data?.role;
 
         // Redirect dựa vào role
@@ -70,7 +72,6 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Login failed:', error);
         this.errorMessage = error.error?.message || 'Login failed. Please check your credentials.';
         this.isLoading = false;
       }

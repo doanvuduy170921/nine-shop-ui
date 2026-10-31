@@ -38,7 +38,7 @@ export class OrderListComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Failed to load orders', err);
+
         this.errorMessage = 'Failed to load orders. Please try again.';
         this.isLoading = false;
       }

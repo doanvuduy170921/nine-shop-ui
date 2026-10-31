@@ -34,17 +34,13 @@ export class RoleGuard implements CanActivate {
       const role = this.tokenStorage.getRole(); // Lấy role từ localStorage
       const allowedRoles = route.data['roles'] as Array<string>;
 
-      // Nếu route không chỉ định roles thì cho phép
       if (!allowedRoles || allowedRoles.length === 0) {
         return true;
       }
 
-      // Kiểm tra role có trong danh sách cho phép không
       if (allowedRoles.includes(<string>role)) {
         return true;
       }
-
-      // Redirect về trang phù hợp với role
       if (role === 'admin') {
         this.router.navigate(['/admin/dashboard']);
       } else if (role === 'customer') {
@@ -55,7 +51,6 @@ export class RoleGuard implements CanActivate {
 
       return false;
     } catch (error) {
-      console.error('Error decoding token:', error);
       this.router.navigate(['/login']);
       return false;
     }

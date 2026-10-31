@@ -27,8 +27,7 @@ export class CategoryListComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage = 'Không thể tải dữ liệu danh mục';
-        console.error(error);
+        this.errorMessage = 'Can not load data category!';
         this.isLoading = false;
       }
     });

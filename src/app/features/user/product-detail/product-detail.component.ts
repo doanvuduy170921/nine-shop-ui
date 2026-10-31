@@ -49,7 +49,6 @@ export class ProductDetailComponent implements OnInit {
           this.mainImage = this.product.thumbnail;
           this.gallery = res.data.gallery
           this.techSpecs = res.data.technical_specs
-          // Khởi tạo variant mặc định là variant đầu tiên
           if (this.product.variants && this.product.variants.length > 0) {
             this.selectedVariant = this.product.variants[0];
             this.selectedAttributes = { ...this.selectedVariant.attributes };
@@ -71,13 +70,11 @@ export class ProductDetailComponent implements OnInit {
     return Object.keys(this.product.variants[0].attributes);
   }
 
-  // Lấy tất cả giá trị có thể có của một thuộc tính (vd: Screen -> ["FHD+", "4K"])
   getAttributeValues(key: string): string[] {
     const values = this.product?.variants.map(v => v.attributes[key]);
-    return [...new Set(values)]; // Lọc trùng
+    return [...new Set(values)];
   }
 
-  // Hàm khi người dùng click chọn option
   selectAttribute(key: string, value: string): void {
     this.selectedAttributes[key] = value;
     this.findMatchingVariant();
@@ -89,13 +86,12 @@ export class ProductDetailComponent implements OnInit {
         key => v.attributes[key] === this.selectedAttributes[key]
       )
     );
-    // Reset số lượng nếu vượt quá kho của variant mới
+
     if (this.selectedVariant && this.quantity > this.selectedVariant.stock_quantity) {
       this.quantity = 1;
     }
   }
 
-  // Cập nhật lại các hàm tính toán theo selectedVariant
   getDisplayPrice(): number {
     return this.selectedVariant ? this.selectedVariant.price : 0;
   }
@@ -112,7 +108,6 @@ export class ProductDetailComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('❌ Error loading images:', err);
       }
     });
   }
@@ -149,7 +144,6 @@ export class ProductDetailComponent implements OnInit {
 
     this.isAddingToCart = true;
 
-    // Gửi đúng variant_id của cấu hình người dùng đang chọn
     const cartData = {
       variant_id: this.selectedVariant.variant_id,
       quantity: this.quantity
@@ -171,7 +165,7 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  // Thêm logic tăng số lượng
+
   increaseQuantity(): void {
     if (this.selectedVariant && this.quantity < this.selectedVariant.stock_quantity) {
       this.quantity++;

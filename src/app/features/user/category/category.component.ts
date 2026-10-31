@@ -96,14 +96,9 @@ export class CategoryComponent implements OnInit {
         if (response.success) {
           this.categories = response.data;
         } else {
-          console.error('Failed to load categories:', response.message);
         }
         this.isLoadingCategories = false;
       },
-      error: (error) => {
-        console.error('Error loading categories:', error);
-        this.isLoadingCategories = false;
-      }
     });
   }
 
@@ -115,12 +110,10 @@ export class CategoryComponent implements OnInit {
         if (response.success) {
           this.brands = response.data;
         } else {
-          console.error('Failed to load brands:', response.message);
         }
         this.isLoadingBrands = false;
       },
       error: (error) => {
-        console.error('Error loading brands:', error);
         this.isLoadingBrands = false;
       }
     });
@@ -177,7 +170,6 @@ export class CategoryComponent implements OnInit {
       },
       error: (error) => {
         this.isLoadingProducts = false;
-        console.error('❌ Error loading products:', error);
         this.products = [];
         this.totalProducts = 0;
       }

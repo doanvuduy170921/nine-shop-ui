@@ -65,14 +65,13 @@ export class MyOrdersComponent implements OnInit {
           // Nếu backend có trả total, bạn có thể thêm field vào ApiResponse và dùng ở đây
           this.totalItems = response.data.length < this.pageSize
             ? (this.currentPage - 1) * this.pageSize + response.data.length
-            : this.currentPage * this.pageSize + 10; // giả định còn trang sau
+            : this.currentPage * this.pageSize + 10;
 
           this.totalPages = Math.ceil(this.totalItems / this.pageSize);
         }
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error loading orders:', err);
         this.loading = false;
       }
     });

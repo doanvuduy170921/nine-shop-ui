@@ -55,7 +55,6 @@ export class CartComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading cart:', error);
         this.errorMessage = 'Không thể tải giỏ hàng. Vui lòng thử lại.';
         this.isLoading = false;
       }
@@ -112,8 +111,7 @@ export class CartComponent implements OnInit {
           this.toastService.success('Thành công', 'Đã xóa sản phẩm');
         },
         error: (err) => {
-          console.error('Lỗi xóa:', err);
-          this.errorMessage = 'Không thể xóa sản phẩm.';
+          this.errorMessage = 'Can not delete product!';
           this.isLoading = false;
         }
       });
@@ -188,8 +186,7 @@ export class CartComponent implements OnInit {
         this.router.navigate(['/checkout']);
       },
       error: (error) => {
-        console.error('Error updating cart:', error);
-        this.errorMessage = 'Can not update your card, Please retry!';
+        this.errorMessage = 'Can not update your cart, Please retry!';
         this.isLoading = false;
       }
     });

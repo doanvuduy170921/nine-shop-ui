@@ -81,7 +81,6 @@ export class CheckoutComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Error loading payment methods:', error);
       }
     });
   }
@@ -173,17 +172,14 @@ export class CheckoutComponent implements OnInit {
         this.router.navigate(['/validate-otp']);
       },
       error: (err) => {
-        console.error('Full Error Object:', err);
-
-
         if (typeof err.error === 'string') {
-          this.errorMessage = err.error; // Nếu backend trả về string thô
+          this.errorMessage = err.error;
         } else if (err.error && err.error.message) {
-          this.errorMessage = err.error.message; // Nếu là { message: "..." }
+          this.errorMessage = err.error.message;
         } else if (err.error && err.error.error) {
-          this.errorMessage = err.error.error; // Nếu là { error: "..." }
+          this.errorMessage = err.error.error;
         } else {
-          this.errorMessage = 'Không thể tạo đơn hàng';
+          this.errorMessage = 'Can not create order!';
         }
 
         this.isLoading = false;
@@ -198,17 +194,17 @@ export class CheckoutComponent implements OnInit {
         if (response.success) {
           this.cartItems = response.data;
           if (this.cartItems.length === 0) {
-            alert('Giỏ hàng của bạn đang trống!');
+            alert('Your cart is empty!');
             this.router.navigate(['/cart']);
           } else {
-            alert('Vui lòng quay lại giỏ hàng!');
+            alert('Please back to page your cart!');
             this.router.navigate(['/cart']);
           }
         }
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading cart:', error);
+
         this.isLoading = false;
       }
     });

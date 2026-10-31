@@ -95,7 +95,6 @@ export class CreateProductComponent implements OnInit {
       next: (response) => {
         this.brands = response.data;
       },
-      error: (err) => console.error('Error loading brands:', err)
     });
   }
 
@@ -104,7 +103,6 @@ export class CreateProductComponent implements OnInit {
       next: (response) => {
         this.categories = response.data;
       },
-      error: (err) => console.error('Error loading categories:', err)
     });
   }
 
@@ -151,7 +149,6 @@ export class CreateProductComponent implements OnInit {
         this.uploadingImages = false;
       },
       error: (err) => {
-        console.error('Upload error:', err);
         this.uploadingImages = false;
         this.showError('Failed to upload image');
       }
@@ -338,7 +335,6 @@ export class CreateProductComponent implements OnInit {
           this.saving = false;
         },
         error: (err) => {
-          console.error('Error details:', err.error);
           this.showError(err.error?.message || 'Failed to create product');
           this.saving = false;
         }
@@ -410,7 +406,6 @@ export class CreateProductComponent implements OnInit {
         this.imagesPreviews = parsed.imagesPreviews || [];
         this.showVariantSection = this.variantAttributes.length > 0;
       } catch (e) {
-        console.error('Failed to load draft:', e);
       }
     }
   }

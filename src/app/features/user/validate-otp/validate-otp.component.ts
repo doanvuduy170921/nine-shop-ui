@@ -96,7 +96,6 @@ export class ValidateOtpComponent implements OnInit {
         }, 800);
       },
       error: (error) => {
-        console.error('OTP validation error:', error);
         this.isLoading = false;
         this.errorMessage = error.error?.message || 'OTP không chính xác hoặc đã hết hạn. Vui lòng thử lại.';
       }

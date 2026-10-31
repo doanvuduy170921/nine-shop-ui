@@ -45,7 +45,6 @@ export class HomeComponent implements OnInit {
         this.keyboards = res.data.keyboards;
         this.mouses = res.data.mouses;
       },
-      (err) => console.error(err)
     );
   }
 

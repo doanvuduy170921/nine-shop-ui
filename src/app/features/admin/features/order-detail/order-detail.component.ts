@@ -74,7 +74,6 @@ export class OrderDetailComponent implements OnInit {
       error: (error) => {
         this.isLoading = false;
         this.errorMessage = 'Cannot load order detail. Please try again.';
-        console.error('Error loading order detail:', error);
       }
     });
   }

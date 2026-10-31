@@ -90,7 +90,7 @@ export class ProductListComponent implements OnInit {
         this.isLoadingCategories = false;
       },
       error: (error) => {
-        console.error('Error loading categories:', error);
+
         this.isLoadingCategories = false;
       }
     });
@@ -129,7 +129,6 @@ export class ProductListComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading products:', err);
         this.products = [];
         this.isLoading = false;
       }
@@ -162,7 +161,6 @@ export class ProductListComponent implements OnInit {
         this.loadingVariants[productId] = false;
       },
       error: (err) => {
-        console.error('Error loading variants:', err);
         this.loadingVariants[productId] = false;
       }
     });

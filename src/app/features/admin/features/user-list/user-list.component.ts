@@ -81,7 +81,6 @@ export class UserListComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error loading users:', err);
         this.isLoading = false;
         this.users = [];
         this.toastService.error(
@@ -164,14 +163,13 @@ export class UserListComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.toastService.success('Thành công', 'Đã vô hiệu hóa người dùng');
-          // Cập nhật ngay trên UI mà không cần reload
           user.is_active = false;
         } else {
           this.toastService.error('Thất bại', res.message || 'Không thể vô hiệu hóa');
         }
       },
       error: (err) => {
-        console.error('Soft delete error:', err);
+
         this.toastService.error('Lỗi', 'Không thể kết nối tới máy chủ');
       }
     });
