@@ -59,12 +59,10 @@ export class RegisterUserComponent implements OnInit {
         if (serverError && serverError.errors) {
           this.validationErrors = serverError.errors;
           this.errorMessage = '';
-        }
-        else if (serverError && serverError.message) {
+        } else if (serverError && serverError.message) {
           this.errorMessage = serverError.message;
           this.validationErrors = {};
-        }
-        else {
+        } else {
           this.errorMessage = 'Đăng ký thất bại';
           this.validationErrors = {};
         }
