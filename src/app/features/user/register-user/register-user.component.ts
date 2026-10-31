@@ -52,8 +52,22 @@ export class RegisterUserComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Đăng ký thất bại';
-        console.log(error)
+        console.log(error);
+
+        const serverError = error.error;
+
+        if (serverError && serverError.errors) {
+          this.validationErrors = serverError.errors;
+          this.errorMessage = '';
+        }
+        else if (serverError && serverError.message) {
+          this.errorMessage = serverError.message;
+          this.validationErrors = {};
+        }
+        else {
+          this.errorMessage = 'Đăng ký thất bại';
+          this.validationErrors = {};
+        }
       }
     });
   }
