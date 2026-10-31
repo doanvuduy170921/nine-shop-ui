@@ -43,7 +43,7 @@ export class RegisterUserComponent implements OnInit {
     this.authService.register(this.signUpForm.value).subscribe({
       next: (response) => {
         if (response.success) {
-          this.toastService.success('Thành công', 'Vui lòng kiểm tra mã OTP trong email');
+          this.toastService.success('Successfully', 'Please check OTP code in your email!');
           this.router.navigate(['/validate-otp-register-user'], {
             queryParams: { email: this.signUpForm.value.email }
           });
@@ -54,14 +54,14 @@ export class RegisterUserComponent implements OnInit {
         this.isLoading = false;
         console.log('Error response:', error);
 
-        const serverError = error.error; // Lấy body JSON mà backend trả về
+        const serverError = error.error;
 
         if (serverError) {
-          this.errorMessage = serverError.message || 'Đăng ký thất bại';
+          this.errorMessage = serverError.message || 'Register Fail!';
 
           this.validationErrors = serverError.errors || {};
         } else {
-          this.errorMessage = 'Đăng ký thất bại';
+          this.errorMessage = 'Register Fail!';
           this.validationErrors = {};
         }
       }
